@@ -1,0 +1,2108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>gen_java: easy java for erlang</title>
+<!-- 2015-03-12 Thu 08:32 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Joe DeVivo" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">gen_java: easy java for erlang</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. gen_java</a>
+<ul>
+<li><a href="#sec-1-1">1.1. Joe DeVivo</a></li>
+<li><a href="#sec-1-2">1.2. @joedevivo</a></li>
+<li><a href="#sec-1-3">1.3. CHEF</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. Introduction</a>
+<ul>
+<li><a href="#sec-2-1">2.1. I write Erlang at CHEF</a></li>
+<li><a href="#sec-2-2">2.2. I used to write Java</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. Analytics at Chef</a>
+<ul>
+<li><a href="#sec-3-1">3.1. Hipchat</a></li>
+<li><a href="#sec-3-2">3.2. SMTP</a></li>
+<li><a href="#sec-3-3">3.3. Webhooks</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Want more?</a></li>
+<li><a href="#sec-5">5. Alaska Pipeline</a>
+<ul>
+<li><a href="#sec-5-1">5.1. Apache Storm Pipeline</a></li>
+<li><a href="#sec-5-2">5.2. It's a pipeline, Alaska has pipelines, we called it Alaska</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6. Parsing Rules</a>
+<ul>
+<li><a href="#sec-6-1">6.1. Alaska Rules, an ANTLR grammar for Java</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7. Configuration Web Service</a>
+<ul>
+<li><a href="#sec-7-1">7.1. Built on Erlang / Webmachine / Sqerl</a></li>
+</ul>
+</li>
+<li><a href="#sec-8">8. Validating Rules</a>
+<ul>
+<li><a href="#sec-8-1">8.1. Dave likes writing parsers, so he gave us</a></li>
+</ul>
+</li>
+<li><a href="#sec-9">9. Erlaska Rules</a>
+<ul>
+<li><a href="#sec-9-1">9.1. Neotoma Parser</a></li>
+</ul>
+</li>
+<li><a href="#sec-10">10. erlaska_rules.erl</a></li>
+<li><a href="#sec-11">11. What If?</a></li>
+<li><a href="#sec-12">12. The easy way</a></li>
+<li><a href="#sec-13">13. Wait</a></li>
+<li><a href="#sec-14">14. JInterface</a>
+<ul>
+<li><a href="#sec-14-1">14.1. It understands the ideas of:</a>
+<ul>
+<li><a href="#sec-14-1-1">14.1.1. Nodes</a></li>
+<li><a href="#sec-14-1-2">14.1.2. EPMD</a></li>
+<li><a href="#sec-14-1-3">14.1.3. Erlang Datatypes</a></li>
+<li><a href="#sec-14-1-4">14.1.4. Process Messages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-15">15. No RPC, No Problem</a></li>
+<li><a href="#sec-16">16. So, what's `Request` look like?</a></li>
+<li><a href="#sec-17">17. do_call</a>
+<ul>
+<li><a href="#sec-17-1">17.1. Some RPC magic we don't need to worry about</a></li>
+<li><a href="#sec-17-2">17.2. what we do care about is that it calls gen_server:call</a></li>
+</ul>
+</li>
+<li><a href="#sec-18">18. Request II</a></li>
+<li><a href="#sec-19">19. But wait, there's more</a>
+<ul>
+<li><a href="#sec-19-1">19.1. PEEVE: rpc is in kernel, but gen_server is in stdlib</a></li>
+</ul>
+</li>
+<li><a href="#sec-20">20. gen:call</a></li>
+<li><a href="#sec-21">21. 1st element</a></li>
+<li><a href="#sec-22">22. 2nd element</a></li>
+<li><a href="#sec-23">23. 3rd element</a></li>
+<li><a href="#sec-24">24. Now we know what erlang sends to other erlang nodes for rpc:call</a></li>
+<li><a href="#sec-25">25. Setting up the Java Side</a></li>
+<li><a href="#sec-26">26. Deserialization in Java</a></li>
+<li><a href="#sec-27">27. Validate Arity</a></li>
+<li><a href="#sec-28">28. Validate gen_call as first element:</a></li>
+<li><a href="#sec-29">29. Validate second element: {Pid::pid, Ref::ref}</a></li>
+<li><a href="#sec-30">30. Validate the call tuple: {call::atom, Mod::atom, Fun::atom, List::list(), user:atom()}</a></li>
+<li><a href="#sec-31">31. Validate M,F,A</a></li>
+<li><a href="#sec-32">32. Exception Handling: toErlangException</a></li>
+<li><a href="#sec-33">33. Exception Handling: send</a>
+<ul>
+<li><a href="#sec-33-1">33.1. TODO: what does a response look like?</a></li>
+</ul>
+</li>
+<li><a href="#sec-34">34. But, sometimes not.</a></li>
+<li><a href="#sec-35">35. What does Erlang do with all this?</a>
+<ul>
+<li><a href="#sec-35-1">35.1. <span class="todo TODO">TODO</span> rpc receive?</a></li>
+</ul>
+</li>
+<li><a href="#sec-36">36. The gen_java module</a>
+<ul>
+<li><a href="#sec-36-1">36.1. It's a gen_server</a></li>
+<li><a href="#sec-36-2">36.2. Starts a jar of your choosing!</a></li>
+<li><a href="#sec-36-3">36.3. When you build that jar, include gen_java.jar</a></li>
+</ul>
+</li>
+<li><a href="#sec-37">37. The gen_java project structure</a></li>
+<li><a href="#sec-38">38. Starting the gen_java server</a></li>
+<li><a href="#sec-39">39. Basic Handshake</a></li>
+<li><a href="#sec-40">40. Handshake II</a>
+<ul>
+<li><a href="#sec-40-1">40.1. keeps rpc calling erlang:node/0 until it gets an answer</a></li>
+<li><a href="#sec-40-2">40.2. if it doesn't stop the server, otherwise</a></li>
+<li><a href="#sec-40-3">40.3. link the java node back to the server's process</a></li>
+<li><a href="#sec-40-4">40.4. monitor the java node</a></li>
+<li><a href="#sec-40-5">40.5. init_callback?</a></li>
+</ul>
+</li>
+<li><a href="#sec-41">41. init_callback</a></li>
+<li><a href="#sec-42">42. Error logging</a></li>
+<li><a href="#sec-43">43. Recap</a>
+<ul>
+<li><a href="#sec-43-1">43.1. We're sending rpc:calls to the java node</a></li>
+<li><a href="#sec-43-2">43.2. we can send error messages back</a>
+<ul>
+<li><a href="#sec-43-2-1">43.2.1. console</a></li>
+<li><a href="#sec-43-2-2">43.2.2. rpc responses</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-44">44. So, what do we do with actual rpc calls?</a></li>
+<li><a href="#sec-45">45. The Easy Way : Hard Coded</a></li>
+<li><a href="#sec-46">46. Needed by our Handshake</a>
+<ul>
+<li><a href="#sec-46-1">46.1. erlang:node/0</a></li>
+<li><a href="#sec-46-2">46.2. erlang:link/1</a></li>
+</ul>
+</li>
+<li><a href="#sec-47">47. POC Methods</a>
+<ul>
+<li><a href="#sec-47-1">47.1. erlang:abs/1</a></li>
+</ul>
+</li>
+<li><a href="#sec-48">48. Nice for JVM inspection</a>
+<ul>
+<li><a href="#sec-48-1">48.1. java:system_properties/0</a></li>
+<li><a href="#sec-48-2">48.2. java:system_env/0</a></li>
+<li><a href="#sec-48-3">48.3. java:input_args/0</a></li>
+</ul>
+</li>
+<li><a href="#sec-49">49. WTF is the java module?!</a></li>
+<li><a href="#sec-50">50. Needed by our Handshake</a></li>
+<li><a href="#sec-51">51. All Others</a>
+<ul>
+<li><a href="#sec-51-1">51.1. must be java methods of type public static final</a></li>
+<li><a href="#sec-51-2">51.2. must have all arguments and return types of classes provided by JInterface</a></li>
+<li><a href="#sec-51-3">51.3. since java reflection is a bit expensive, we cache the Method objects.</a></li>
+</ul>
+</li>
+<li><a href="#sec-52">52. Initializing the RPC Method Cache</a></li>
+<li><a href="#sec-53">53. dat java module</a></li>
+<li><a href="#sec-54">54. What about your own methods?</a>
+<ul>
+<li><a href="#sec-54-1">54.1. Module: Full Java Classname</a></li>
+<li><a href="#sec-54-2">54.2. Function: Java Method Name</a></li>
+<li><a href="#sec-54-3">54.3. Args: ARGS!</a></li>
+</ul>
+</li>
+<li><a href="#sec-55">55. Caching?</a></li>
+<li><a href="#sec-56">56. Payoff!</a></li>
+<li><a href="#sec-57">57. Off the deep end?</a></li>
+<li><a href="#sec-58">58. Erlang Developer Experience</a></li>
+<li><a href="#sec-59">59. Your Java Module</a></li>
+<li><a href="#sec-60">60. Your sys.config</a></li>
+<li><a href="#sec-61">61. Your Supervisor</a>
+<ul>
+<li><a href="#sec-61-1">61.1. start it with my_java:start_link/0 or</a></li>
+</ul>
+</li>
+<li><a href="#sec-62">62. Options</a></li>
+<li><a href="#sec-63">63. init callback</a></li>
+<li><a href="#sec-64">64. Parse Transform</a>
+<ul>
+<li><a href="#sec-64-1">64.1. wrappers for gen_server:call</a></li>
+</ul>
+</li>
+<li><a href="#sec-65">65. How it does it</a></li>
+<li><a href="#sec-66">66. 5 Functions</a></li>
+<li><a href="#sec-67">67. That's it!</a>
+<ul>
+<li><a href="#sec-67-1">67.1. Let's look at one</a></li>
+<li><a href="#sec-67-2">67.2. L : The line number at which this code goes</a></li>
+<li><a href="#sec-67-3">67.3. Module: The name of the module we're calling</a></li>
+</ul>
+</li>
+<li><a href="#sec-68">68. Generated Function</a></li>
+<li><a href="#sec-69">69. Abstract Forms</a></li>
+<li><a href="#sec-70">70. Your own Abstract Form</a></li>
+<li><a href="#sec-71">71. Adding convenience</a></li>
+<li><a href="#sec-72">72. Then using java in your app is as easy as</a></li>
+<li><a href="#sec-73">73. Bringing it Back to CHEF Analytics</a>
+<ul>
+<li><a href="#sec-73-1">73.1. erlaska_rules is out!</a></li>
+<li><a href="#sec-73-2">73.2. alaska_rules.jar is in!</a></li>
+</ul>
+</li>
+<li><a href="#sec-74">74. sys.config</a></li>
+<li><a href="#sec-75">75. alaska_rules.erl</a></li>
+<li><a href="#sec-76">76. init/1</a></li>
+<li><a href="#sec-77">77. Wraping Up</a></li>
+<li><a href="#sec-78">78. Erlang Haskell Interface</a></li>
+<li><a href="#sec-79">79. Erlang gives you zero Haskell for free</a></li>
+<li><a href="#sec-80">80. What I got:</a></li>
+<li><a href="#sec-81">81. Erlang Types</a></li>
+<li><a href="#sec-82">82. Packing functions</a></li>
+<li><a href="#sec-83">83. Half a Protocol</a></li>
+<li><a href="#sec-84">84. Getting the old one working</a></li>
+<li><a href="#sec-85">85. Spinning up a Haskell Erlang node</a></li>
+<li><a href="#sec-86">86. createSelf</a></li>
+<li><a href="#sec-87">87. serve</a></li>
+<li><a href="#sec-88">88. Learning EPMD</a></li>
+<li><a href="#sec-89">89. Reserving a port</a></li>
+<li><a href="#sec-90">90. What's that look like?</a></li>
+<li><a href="#sec-91">91. Haskell Does It</a></li>
+<li><a href="#sec-92">92. The Distribution Handshake</a>
+<ul>
+<li><a href="#sec-92-1">92.1. Funky Middle Syntax</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> gen_java</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Joe DeVivo</h3>
+</div>
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> <a href="http://twitter.com/joedevivo">@joedevivo</a></h3>
+</div>
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> <a href="http://chef.io">CHEF</a></h3>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Introduction</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> I write Erlang at CHEF</h3>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> I used to write Java</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Analytics at Chef</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Amongst other things, sends alerts to various endpoints when various
+things happen
+</p>
+</div>
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Hipchat</h3>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> SMTP</h3>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> Webhooks</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Want more?</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+BUY MY CONFIGURATION MANAGEMENT INFRASTRUCTURE
+</p>
+
+<p>
+<a href="http://chef.io">CHEF.io</a> | <a href="http://docs.chef.io/analytics/">Analytics Documentation</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Alaska Pipeline</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Apache Storm Pipeline</h3>
+</div>
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> It's a pipeline, Alaska has pipelines, we called it Alaska</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+You write rules <a href="http://docs.chef.io/analytics/analytics_rules.html">Rule Documentation</a>
+</p>
+
+<pre class="example">
+rules 'Rule 1' with priority = 1
+  rule on action
+    when true
+    then notify('hipchat')
+  end
+end
+
+rules 'Rule 2' with priority = 2
+  rule on action
+    when task = 'associate'
+    then notify('webhook')
+  end
+end
+</pre>
+
+<p>
+notify(X) will use a different set of definitions for what those
+messages contain.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Parsing Rules</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Alaska Rules, an ANTLR grammar for Java</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Events processed by Apache Storm pipeline
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Configuration Web Service</h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> Built on Erlang / <a href="http://github.com/basho/webmachine">Webmachine</a> / <a href="http://github.org/chef/sqerl">Sqerl</a></h3>
+</div>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Validating Rules</h2>
+<div class="outline-text-2" id="text-8">
+</div><div id="outline-container-sec-8-1" class="outline-3">
+<h3 id="sec-8-1"><span class="section-number-3">8.1</span> Dave likes writing parsers, so he gave us</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> Erlaska Rules</h2>
+<div class="outline-text-2" id="text-9">
+</div><div id="outline-container-sec-9-1" class="outline-3">
+<h3 id="sec-9-1"><span class="section-number-3">9.1</span> <a href="https://github.com/seancribbs/neotoma">Neotoma</a> Parser</h3>
+<div class="outline-text-3" id="text-9-1">
+<p>
+Neotoma is a packrat parser-generator for Erlang for Parsing
+Expression Grammars (PEGs).
+</p>
+
+<p>
+The important thing being that it's different from how ANTLR does grammars
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> erlaska_rules.erl</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+erlaska_rules is a module generated by the neotoma project. Once we
+have that parser, validating rules from webmachine was as easy as:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">inside malformed_request/2</span>
+<span style="color: #718c00;">case</span> <span style="color: #4271ae;">erlaska_rules</span>:<span style="color: #4271ae;">parse</span>(<span style="color: #eab700;">Rule</span>) <span style="color: #718c00;">of</span>
+    true -&gt;
+        {false, <span style="color: #eab700;">Req</span>, <span style="color: #eab700;">State</span>#<span style="color: #4271ae;">state</span>{rule=<span style="color: #eab700;">Rule</span>}};
+    {false, <span style="color: #eab700;">_Reason</span>} -&gt;
+        {true, <span style="color: #eab700;">Req</span>, <span style="color: #eab700;">State</span>}
+<span style="color: #718c00;">end</span>;
+</pre>
+</div>
+
+<p>
+This worked fine at first, but every change to the grammar had to be
+duplicated. Well, it turns out that we never got that far. We never
+actually achieved 100% compatibility.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> What If?</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+We could call the Java parser from Erlang?
+</p>
+
+<p>
+We've already got the ANTLR grammar, which is the definitive truth for
+correctness of rules anyway. If we could use that, we cut our work in
+half. Even though Dave loves parsers.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> The easy way</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+We could have just made a java command line tool for parsing rules,
+but it just seemed like too much of a hack
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><span class="section-number-2">13</span> Wait</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+I've run Java from Erlang before with Riak_JMX. If you have to do
+something twice, it's time to make it generic.
+</p>
+
+<p>
+But actually, I'm doing something new here. What I really want to do
+is send Java an rpc:call and have Erlang not really even care that
+Java is involved.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><span class="section-number-2">14</span> JInterface</h2>
+<div class="outline-text-2" id="text-14">
+<p>
+It turns out we've had this for a while.
+</p>
+</div>
+
+<div id="outline-container-sec-14-1" class="outline-3">
+<h3 id="sec-14-1"><span class="section-number-3">14.1</span> It understands the ideas of:</h3>
+<div class="outline-text-3" id="text-14-1">
+</div><div id="outline-container-sec-14-1-1" class="outline-4">
+<h4 id="sec-14-1-1"><span class="section-number-4">14.1.1</span> Nodes</h4>
+</div>
+<div id="outline-container-sec-14-1-2" class="outline-4">
+<h4 id="sec-14-1-2"><span class="section-number-4">14.1.2</span> EPMD</h4>
+</div>
+<div id="outline-container-sec-14-1-3" class="outline-4">
+<h4 id="sec-14-1-3"><span class="section-number-4">14.1.3</span> Erlang Datatypes</h4>
+</div>
+<div id="outline-container-sec-14-1-4" class="outline-4">
+<h4 id="sec-14-1-4"><span class="section-number-4">14.1.4</span> Process Messages</h4>
+<div class="outline-text-4" id="text-14-1-4">
+<p>
+<a href="http://www.erlang.org/doc/apps/jinterface/jinterface_users_guide.html">JInterface User Guide</a>
+</p>
+
+<p>
+<a href="http://www.erlang.org/doc/apps/jinterface/java/com/ericsson/otp/erlang/package-summary.html">JInterface Javadoc</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15"><span class="section-number-2">15</span> No RPC, No Problem</h2>
+<div class="outline-text-2" id="text-15">
+<p>
+Note: My OTP source links will all be to the tag R16B03-1
+</p>
+
+<p>
+I already knew that RPC calls were handled by a process called `rex`,
+so I stared digging around the Erlang source for it
+</p>
+
+<p>
+<a href="https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L344">https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L344</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">In the source for rpc.erl</span>
+<span style="color: #8959a8;">-define</span>(<span style="color: #eab700;">NAME</span>, rex).
+<span style="color: #eab700;">Result</span> = <span style="color: #4271ae;">gen_server</span>:<span style="color: #4271ae;">call</span>({?<span style="color: #4271ae;">NAME</span>,<span style="color: #eab700;">Node</span>}, <span style="color: #eab700;">Request</span>, <span style="color: #eab700;">Timeout</span>),
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16"><span class="section-number-2">16</span> So, what's `Request` look like?</h2>
+<div class="outline-text-2" id="text-16">
+<p>
+<a href="https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L296">https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L296</a>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">rpc:call source</span>
+<span style="color: #f5871f;">call</span>(<span style="color: #eab700;">N</span>,<span style="color: #eab700;">M</span>,<span style="color: #eab700;">F</span>,<span style="color: #eab700;">A</span>,infinity) <span style="color: #718c00;">when</span> <span style="color: #8959a8;">node</span>() =:= <span style="color: #eab700;">N</span> -&gt;<span style="color: #f5871f;"> </span> <span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">Optimize local call</span>
+    <span style="color: #4271ae;">local_call</span>(<span style="color: #eab700;">M</span>,<span style="color: #eab700;">F</span>,<span style="color: #eab700;">A</span>);
+<span style="color: #f5871f;">call</span>(<span style="color: #eab700;">N</span>,<span style="color: #eab700;">M</span>,<span style="color: #eab700;">F</span>,<span style="color: #eab700;">A</span>,infinity) -&gt;
+    <span style="color: #4271ae;">do_call</span>(<span style="color: #eab700;">N</span>, {call,<span style="color: #eab700;">M</span>,<span style="color: #eab700;">F</span>,<span style="color: #eab700;">A</span>,<span style="color: #8959a8;">group_leader</span>()}, infinity);
+<span style="color: #f5871f;">call</span>(<span style="color: #eab700;">N</span>,<span style="color: #eab700;">M</span>,<span style="color: #eab700;">F</span>,<span style="color: #eab700;">A</span>,<span style="color: #eab700;">Timeout</span>) <span style="color: #718c00;">when</span> <span style="color: #8959a8;">is_integer</span>(<span style="color: #eab700;">Timeout</span>), <span style="color: #eab700;">Timeout</span> &gt;= 0 -&gt;
+    <span style="color: #4271ae;">do_call</span>(<span style="color: #eab700;">N</span>, {call,<span style="color: #eab700;">M</span>,<span style="color: #eab700;">F</span>,<span style="color: #eab700;">A</span>,<span style="color: #8959a8;">group_leader</span>()}, <span style="color: #eab700;">Timeout</span>).
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-17" class="outline-2">
+<h2 id="sec-17"><span class="section-number-2">17</span> do_call</h2>
+<div class="outline-text-2" id="text-17">
+</div><div id="outline-container-sec-17-1" class="outline-3">
+<h3 id="sec-17-1"><span class="section-number-3">17.1</span> Some RPC magic we don't need to worry about</h3>
+</div>
+<div id="outline-container-sec-17-2" class="outline-3">
+<h3 id="sec-17-2"><span class="section-number-3">17.2</span> what we do care about is that it calls gen_server:call</h3>
+<div class="outline-text-3" id="text-17-2">
+<p>
+<a href="https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L334-L361">rpc:do_call</a>
+</p>
+
+<p>
+There's some pretty nifty stuff in there about spawning monitors and
+trapping exits, but it's not really relevant to what we're doing here
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-18" class="outline-2">
+<h2 id="sec-18"><span class="section-number-2">18</span> Request II</h2>
+<div class="outline-text-2" id="text-18">
+<div class="org-src-container">
+
+<pre class="src src-erlang">Request = {
+  call        :: <span style="color: #8959a8;">atom</span>(),
+  <span style="color: #eab700;">Module</span>      :: <span style="color: #8959a8;">atom</span>(),
+  <span style="color: #eab700;">Function</span>    :: <span style="color: #8959a8;">atom</span>(),
+  <span style="color: #eab700;">Arguments</span>   :: [<span style="color: #8959a8;">any</span>()],
+  <span style="color: #eab700;">GroupLeader</span> :: <span style="color: #8959a8;">pid</span>()
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-19" class="outline-2">
+<h2 id="sec-19"><span class="section-number-2">19</span> But wait, there's more</h2>
+<div class="outline-text-2" id="text-19">
+<p>
+That's not all Erlang would be sending to another node. Let's dig into the gen_server:call
+</p>
+</div>
+
+<div id="outline-container-sec-19-1" class="outline-3">
+<h3 id="sec-19-1"><span class="section-number-3">19.1</span> PEEVE: rpc is in kernel, but gen_server is in stdlib</h3>
+<div class="outline-text-3" id="text-19-1">
+<p>
+<a href="https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/stdlib/src/gen_server.erl#L168-L189">gen_server:call</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">call</span>(<span style="color: #eab700;">Name</span>, <span style="color: #eab700;">Request</span>, <span style="color: #eab700;">Timeout</span>) -&gt;
+    <span style="color: #718c00;">case</span> <span style="color: #718c00;">catch</span> <span style="color: #4271ae;">gen</span>:<span style="color: #4271ae;">call</span>(<span style="color: #eab700;">Name</span>, <span style="color: #3e999f;">'$gen_call'</span>, <span style="color: #eab700;">Request</span>, <span style="color: #eab700;">Timeout</span>) <span style="color: #718c00;">of</span>
+        {ok,<span style="color: #eab700;">Res</span>} -&gt;
+            <span style="color: #eab700;">Res</span>;
+        {<span style="color: #3e999f;">'EXIT'</span>,<span style="color: #eab700;">Reason</span>} -&gt;
+            <span style="color: #8959a8;">exit</span>({<span style="color: #eab700;">Reason</span>, {?<span style="color: #4271ae;">MODULE</span>, call, [<span style="color: #eab700;">Name</span>, <span style="color: #eab700;">Request</span>, <span style="color: #eab700;">Timeout</span>]}})
+    <span style="color: #718c00;">end</span>.
+</pre>
+</div>
+
+<p>
+Ahhh, the rabbit hole goes deeper.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-20" class="outline-2">
+<h2 id="sec-20"><span class="section-number-2">20</span> gen:call</h2>
+<div class="outline-text-2" id="text-20">
+<p>
+Source: <a href="https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/stdlib/src/gen.erl#L134-L243">gen:call</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8e908c; font-style: italic;">%% </span><span style="color: #8e908c; font-style: italic;">deep in gen:do_call, which is called by gen:call</span>
+<span style="color: #8959a8;">erlang</span>:<span style="color: #8959a8;">send</span>(<span style="color: #eab700;">Process</span>, {<span style="color: #eab700;">Label</span>, {<span style="color: #8959a8;">self</span>(), <span style="color: #eab700;">Mref</span>}, <span style="color: #eab700;">Request</span>},
+                  [noconnect])
+</pre>
+</div>
+
+<p>
+Jackpot! The second argument to erlang:send/3 is our message!
+The actual message being sent is a 3-tuple
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-21" class="outline-2">
+<h2 id="sec-21"><span class="section-number-2">21</span> 1st element</h2>
+<div class="outline-text-2" id="text-21">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #3e999f;">'$gen_call'</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-22" class="outline-2">
+<h2 id="sec-22"><span class="section-number-2">22</span> 2nd element</h2>
+<div class="outline-text-2" id="text-22">
+<div class="org-src-container">
+
+<pre class="src src-erlang">{ <span style="color: #eab700;">From</span> :: <span style="color: #8959a8;">pid</span>(),
+  <span style="color: #eab700;">MRef</span> :: <span style="color: #4271ae;">ref</span>() }
+</pre>
+</div>
+
+<p>
+From pid could be waiting for a bunch of replies.
+MRef let's it know what it's a reply to
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-23" class="outline-2">
+<h2 id="sec-23"><span class="section-number-2">23</span> 3rd element</h2>
+<div class="outline-text-2" id="text-23">
+<p>
+Request from above
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">Request = {
+  call        :: <span style="color: #8959a8;">atom</span>(),
+  <span style="color: #eab700;">Module</span>      :: <span style="color: #8959a8;">atom</span>(),
+  <span style="color: #eab700;">Function</span>    :: <span style="color: #8959a8;">atom</span>(),
+  <span style="color: #eab700;">Arguments</span>   :: [<span style="color: #8959a8;">any</span>()],
+  <span style="color: #eab700;">GroupLeader</span> :: <span style="color: #8959a8;">pid</span>()
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-24" class="outline-2">
+<h2 id="sec-24"><span class="section-number-2">24</span> Now we know what erlang sends to other erlang nodes for rpc:call</h2>
+</div>
+
+<div id="outline-container-sec-25" class="outline-2">
+<h2 id="sec-25"><span class="section-number-2">25</span> Setting up the Java Side</h2>
+<div class="outline-text-2" id="text-25">
+<p>
+JInterface gives us Node for free, so we can just set something up to
+listen for messages
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #718c00;">public</span> <span style="color: #718c00;">static</span> <span style="color: #4271ae;">void</span> <span style="color: #f5871f;">main</span>(<span style="color: #4271ae;">String</span>[] <span style="color: #eab700;">stringArgs</span>) <span style="color: #718c00;">throws</span> <span style="color: #4271ae;">Exception</span> {
+    <span style="color: #4271ae;">String</span> <span style="color: #eab700;">nodename</span> = stringArgs[0];
+    <span style="color: #4271ae;">String</span> <span style="color: #eab700;">cookie</span> = stringArgs[1];
+    <span style="color: #4271ae;">OtpNode</span> <span style="color: #eab700;">self</span> = <span style="color: #718c00;">new</span> <span style="color: #4271ae;">OtpNode</span>(nodename, cookie);
+    <span style="color: #4271ae;">boolean</span> <span style="color: #eab700;">keepGoing</span> = <span style="color: #4271ae;">true</span>;
+    <span style="color: #4271ae;">OtpMbox</span> <span style="color: #eab700;">rex</span> = self.createMbox(<span style="color: #3e999f;">"rex"</span>);
+    <span style="color: #718c00;">while</span>(keepGoing) {
+        <span style="color: #8e908c; font-style: italic;">// </span><span style="color: #8e908c; font-style: italic;">rex.receive is a blocking call,</span>
+        <span style="color: #8e908c; font-style: italic;">//</span><span style="color: #8e908c; font-style: italic;">so just hang out here until one shows up</span>
+        <span style="color: #4271ae;">OtpErlangObject</span> <span style="color: #eab700;">o</span> = rex.receive();
+        System.out.println(<span style="color: #3e999f;">"Rex received '"</span>
+                           + o.toString());
+    }
+}
+</pre>
+</div>
+
+<p>
+The Simplest of Java nodes. Just opens up a `rex` mailbox and waits
+for messages. Any rpc:call to this node will just print it's content
+to stdout.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-26" class="outline-2">
+<h2 id="sec-26"><span class="section-number-2">26</span> Deserialization in Java</h2>
+<div class="outline-text-2" id="text-26">
+<p>
+This is where we start missing pattern matching. It takes about 50
+lines of Java to parse out that 3-tuple that gen:do_call is sending
+over. And that's with Exception handling abstracted out
+</p>
+
+<p>
+Source <a href="https://github.com/joedevivo/gen_java/blob/0.1.2/src/main/java/com/devivo/gen_java/ErlangRemoteProcedureCallMessage.java#L20-L77">ErlangRemoteProcedureCallMessage.java</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-27" class="outline-2">
+<h2 id="sec-27"><span class="section-number-2">27</span> Validate Arity</h2>
+<div class="outline-text-2" id="text-27">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #4271ae;">OtpErlangTuple</span> <span style="color: #eab700;">rexCall</span> = (<span style="color: #4271ae;">OtpErlangTuple</span>)o;
+<span style="color: #4271ae;">int</span> <span style="color: #eab700;">arity</span> = rexCall.arity();
+<span style="color: #718c00;">if</span> (arity != 3) {
+    <span style="color: #718c00;">throw</span> <span style="color: #718c00;">new</span> <span style="color: #4271ae;">Exception</span>(<span style="color: #3e999f;">"Rex message has invalid arity. expected 3, got "</span> + arit<span style="color: #c82829; background-color: #d6d6d6;">y);</span>
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-28" class="outline-2">
+<h2 id="sec-28"><span class="section-number-2">28</span> Validate gen_call as first element:</h2>
+<div class="outline-text-2" id="text-28">
+<p>
+Remember the 1st element? '$gen_call'
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #4271ae;">OtpErlangAtom</span> <span style="color: #eab700;">gen_call</span> = (<span style="color: #4271ae;">OtpErlangAtom</span>)(rexCall.elementAt(0));
+<span style="color: #4271ae;">String</span> <span style="color: #eab700;">gen_call_string</span> = gen_call.atomValue();
+<span style="color: #718c00;">if</span> (<span style="color: #4271ae;">!</span>gen_call_string.equals(<span style="color: #3e999f;">"$gen_call"</span>)) {
+    <span style="color: #718c00;">throw</span> <span style="color: #718c00;">new</span> <span style="color: #4271ae;">Exception</span>(<span style="color: #3e999f;">"Rex message should start with '$gen_call': "</span> + o.toStri<span style="color: #c82829; background-color: #d6d6d6;">ng());</span>
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-29" class="outline-2">
+<h2 id="sec-29"><span class="section-number-2">29</span> Validate second element: {Pid::pid, Ref::ref}</h2>
+<div class="outline-text-2" id="text-29">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #4271ae;">OtpErlangTuple</span> <span style="color: #eab700;">fromTuple</span> = (<span style="color: #4271ae;">OtpErlangTuple</span>)(rexCall.elementAt(1));
+<span style="color: #4271ae;">int</span> <span style="color: #eab700;">fromArity</span> = fromTuple.arity();
+<span style="color: #718c00;">if</span> (fromArity != 2) {
+    <span style="color: #718c00;">throw</span> <span style="color: #718c00;">new</span> <span style="color: #4271ae;">Exception</span>(<span style="color: #3e999f;">"Rex message's 'from' tuple should have 2 elements, has </span><span style="color: #c82829; background-color: #d6d6d6;">"</span><span style="color: #c82829; background-color: #d6d6d6;"> + fromArity + </span><span style="color: #c82829; background-color: #d6d6d6;">": "</span><span style="color: #c82829; background-color: #d6d6d6;"> + o.toString());</span>
+}
+<span style="color: #718c00;">this</span>.fromPid = (<span style="color: #4271ae;">OtpErlangPid</span>)(fromTuple.elementAt(0));
+<span style="color: #718c00;">this</span>.fromRef = (<span style="color: #4271ae;">OtpErlangRef</span>)(fromTuple.elementAt(1));
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-30" class="outline-2">
+<h2 id="sec-30"><span class="section-number-2">30</span> Validate the call tuple: {call::atom, Mod::atom, Fun::atom, List::list(), user:atom()}</h2>
+<div class="outline-text-2" id="text-30">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #4271ae;">OtpErlangTuple</span> <span style="color: #eab700;">callTuple</span> = (<span style="color: #4271ae;">OtpErlangTuple</span>)(rexCall.elementAt(2));
+<span style="color: #4271ae;">int</span> <span style="color: #eab700;">callArity</span> = callTuple.arity();
+<span style="color: #718c00;">if</span> (callArity != 5) {
+    <span style="color: #718c00;">throw</span> <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangRemoteException</span>(<span style="color: #718c00;">this</span>.fromPid, <span style="color: #718c00;">this</span>.fromRef,
+              <span style="color: #3e999f;">"Rex message's 'call' tuple should have 5 elements, has "</span> + callAr<span style="color: #c82829; background-color: #d6d6d6;">ity + </span><span style="color: #c82829; background-color: #d6d6d6;">": "</span><span style="color: #c82829; background-color: #d6d6d6;"> + o.toString());</span>
+}
+<span style="color: #4271ae;">OtpErlangAtom</span> <span style="color: #eab700;">callAtom</span> = (<span style="color: #4271ae;">OtpErlangAtom</span>)(callTuple.elementAt(0));
+<span style="color: #4271ae;">String</span> <span style="color: #eab700;">callString</span> = callAtom.atomValue();
+<span style="color: #718c00;">if</span> (<span style="color: #4271ae;">!</span>callString.equals(<span style="color: #3e999f;">"call"</span>)) {
+    <span style="color: #718c00;">throw</span> <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangRemoteException</span>(<span style="color: #718c00;">this</span>.fromPid, <span style="color: #718c00;">this</span>.fromRef,
+              <span style="color: #3e999f;">"Rex message's call block should start with 'call', but it's : "</span> +<span style="color: #c82829; background-color: #d6d6d6;"> callString);</span>
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-31" class="outline-2">
+<h2 id="sec-31"><span class="section-number-2">31</span> Validate M,F,A</h2>
+<div class="outline-text-2" id="text-31">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #718c00;">try</span> {
+    <span style="color: #718c00;">this</span>.mfa = <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangModFunArgs</span>(
+        (<span style="color: #4271ae;">OtpErlangAtom</span>)(callTuple.elementAt(1)),
+        (<span style="color: #4271ae;">OtpErlangAtom</span>)(callTuple.elementAt(2)),
+        (<span style="color: #4271ae;">OtpErlangList</span>)(callTuple.elementAt(3)));
+    <span style="color: #718c00;">this</span>.remoteGroupLeaderPid = (<span style="color: #4271ae;">OtpErlangPid</span>)(callTuple.elementAt(4));
+} <span style="color: #718c00;">catch</span> (<span style="color: #4271ae;">Exception</span> <span style="color: #eab700;">e</span>) {
+    <span style="color: #718c00;">throw</span> <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangRemoteException</span>(<span style="color: #718c00;">this</span>.fromPid, <span style="color: #718c00;">this</span>.fromRef, e);
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-32" class="outline-2">
+<h2 id="sec-32"><span class="section-number-2">32</span> Exception Handling: toErlangException</h2>
+<div class="outline-text-2" id="text-32">
+<p>
+Source: <a href="https://github.com/joedevivo/gen_java/blob/0.1.2/src/main/java/com/devivo/gen_java/ErlangRemoteException.java">ErlangRemoteException.java</a>
+</p>
+
+<p>
+turns exceptions into {error, "Message"}
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #718c00;">public</span> <span style="color: #718c00;">static</span> <span style="color: #4271ae;">OtpErlangObject</span> <span style="color: #f5871f;">toErlangException</span>(<span style="color: #4271ae;">Exception</span> <span style="color: #eab700;">e</span>) {
+    <span style="color: #4271ae;">OtpErlangObject</span>[] <span style="color: #eab700;">elements</span> = <span style="color: #718c00;">new</span> <span style="color: #4271ae;">OtpErlangObject</span>[2];
+    elements[0] = <span style="color: #718c00;">new</span> <span style="color: #4271ae;">OtpErlangAtom</span>(<span style="color: #3e999f;">"error"</span>);
+    elements[1] = <span style="color: #718c00;">new</span> <span style="color: #4271ae;">OtpErlangString</span>(e.getMessage());
+    <span style="color: #718c00;">return</span> <span style="color: #718c00;">new</span> <span style="color: #4271ae;">OtpErlangTuple</span>(elements);
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-33" class="outline-2">
+<h2 id="sec-33"><span class="section-number-2">33</span> Exception Handling: send</h2>
+<div class="outline-text-2" id="text-33">
+<p>
+send knows just enough about erlang/rex to send an error message back to rpc:call
+</p>
+</div>
+
+<div id="outline-container-sec-33-1" class="outline-3">
+<h3 id="sec-33-1"><span class="section-number-3">33.1</span> TODO: what does a response look like?</h3>
+<div class="outline-text-3" id="text-33-1">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #718c00;">public</span> <span style="color: #4271ae;">void</span> <span style="color: #f5871f;">send</span>(<span style="color: #4271ae;">OtpMbox</span> <span style="color: #eab700;">mbox</span>) {
+    <span style="color: #4271ae;">OtpErlangObject</span>[] <span style="color: #eab700;">elements</span> = <span style="color: #718c00;">new</span> <span style="color: #4271ae;">OtpErlangObject</span>[2];
+    elements[0] = <span style="color: #718c00;">this</span>.fromRef;
+    elements[1] = <span style="color: #718c00;">this</span>.toErlangException();
+    mbox.send(<span style="color: #718c00;">this</span>.fromPid, <span style="color: #718c00;">new</span> <span style="color: #4271ae;">OtpErlangTuple</span>(elements));
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-34" class="outline-2">
+<h2 id="sec-34"><span class="section-number-2">34</span> But, sometimes not.</h2>
+<div class="outline-text-2" id="text-34">
+<p>
+If you noticed, we don't start using ErlangRemoteException until after
+we've read in the second tuple. It's not until then that we know
+enough about the sender to know where to send the reply. Before that,
+we just throw regular exceptions. We'll catch both types when we
+process incoming messages. If we don't know how to respond, we'll just
+dump the output to the console, which we'll teach the erlang side to
+monitor.
+</p>
+
+<p>
+<a href="https://github.com/joedevivo/gen_java/blob/0.1.2/src/main/java/com/devivo/gen_java/ErlangServer.java#L104-L125">Java incoming message processing</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #4271ae;">ErlangRemoteProcedureCallMessage</span> <span style="color: #eab700;">msg</span> = <span style="color: #4271ae;">null</span>;
+
+<span style="color: #718c00;">try</span> {
+    msg = <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangRemoteProcedureCallMessage</span>(rex, o);
+} <span style="color: #718c00;">catch</span> (<span style="color: #4271ae;">ErlangRemoteException</span> <span style="color: #eab700;">erlE</span>) {
+    erlE.send(rex);
+} <span style="color: #718c00;">catch</span> (<span style="color: #4271ae;">Exception</span> <span style="color: #eab700;">e</span>) {
+    System.out.println(<span style="color: #3e999f;">"Rex received '"</span>
+        + o.toString()
+        + <span style="color: #3e999f;">"' but didn't know how to process it. Exception: "</span>
+        + e.getMessage());
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-35" class="outline-2">
+<h2 id="sec-35"><span class="section-number-2">35</span> What does Erlang do with all this?</h2>
+<div class="outline-text-2" id="text-35">
+</div><div id="outline-container-sec-35-1" class="outline-3">
+<h3 id="sec-35-1"><span class="section-number-3">35.1</span> <span class="todo TODO">TODO</span> rpc receive?</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-36" class="outline-2">
+<h2 id="sec-36"><span class="section-number-2">36</span> The gen_java module</h2>
+<div class="outline-text-2" id="text-36">
+</div><div id="outline-container-sec-36-1" class="outline-3">
+<h3 id="sec-36-1"><span class="section-number-3">36.1</span> It's a gen_server</h3>
+</div>
+<div id="outline-container-sec-36-2" class="outline-3">
+<h3 id="sec-36-2"><span class="section-number-3">36.2</span> Starts a jar of your choosing!</h3>
+</div>
+<div id="outline-container-sec-36-3" class="outline-3">
+<h3 id="sec-36-3"><span class="section-number-3">36.3</span> When you build that jar, include gen_java.jar</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-37" class="outline-2">
+<h2 id="sec-37"><span class="section-number-2">37</span> The gen_java project structure</h2>
+</div>
+
+
+<div id="outline-container-sec-38" class="outline-2">
+<h2 id="sec-38"><span class="section-number-2">38</span> Starting the gen_java server</h2>
+<div class="outline-text-2" id="text-38">
+<p>
+Opens a port running your jar in the JVM
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-39" class="outline-2">
+<h2 id="sec-39"><span class="section-number-2">39</span> Basic Handshake</h2>
+<div class="outline-text-2" id="text-39">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #718c00;">case</span> <span style="color: #4271ae;">wait_until</span>(
+            <span style="color: #718c00;">fun</span>() -&gt;
+                <span style="color: #eab700;">X</span> = <span style="color: #4271ae;">rpc</span>:<span style="color: #4271ae;">call</span>(<span style="color: #eab700;">Nodename</span>, erlang, node, [], 10000),
+                <span style="color: #4271ae;">lager</span>:<span style="color: #4271ae;">debug</span>(<span style="color: #3e999f;">"[gen_java][~p] rpc:call(~p, erlang, node, []) = ~p"</span>, [<span style="color: #eab700;">Module</span>, <span style="color: #eab700;">Nodename</span>, <span style="color: #eab700;">X</span>]),
+                <span style="color: #eab700;">Nodename</span> =:= <span style="color: #eab700;">X</span>
+            <span style="color: #718c00;">end</span>, 20, 1000) <span style="color: #718c00;">of</span>
+ok -&gt;
+    <span style="color: #4271ae;">rpc</span>:<span style="color: #4271ae;">call</span>(<span style="color: #eab700;">Nodename</span>, erlang, link, [<span style="color: #8959a8;">self</span>()]),
+    <span style="color: #8959a8;">erlang</span>:<span style="color: #8959a8;">monitor_node</span>(<span style="color: #eab700;">Nodename</span>, true),
+    <span style="color: #4271ae;">init_callback</span>( <span style="color: #eab700;">State</span>#<span style="color: #4271ae;">gen_java_state</span>{ port = <span style="color: #eab700;">Port</span>, pid = <span style="color: #eab700;">Pid</span>});
+timeout -&gt;
+    {stop, timeout}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-40" class="outline-2">
+<h2 id="sec-40"><span class="section-number-2">40</span> Handshake II</h2>
+<div class="outline-text-2" id="text-40">
+</div><div id="outline-container-sec-40-1" class="outline-3">
+<h3 id="sec-40-1"><span class="section-number-3">40.1</span> keeps rpc calling erlang:node/0 until it gets an answer</h3>
+</div>
+<div id="outline-container-sec-40-2" class="outline-3">
+<h3 id="sec-40-2"><span class="section-number-3">40.2</span> if it doesn't stop the server, otherwise</h3>
+</div>
+<div id="outline-container-sec-40-3" class="outline-3">
+<h3 id="sec-40-3"><span class="section-number-3">40.3</span> link the java node back to the server's process</h3>
+</div>
+<div id="outline-container-sec-40-4" class="outline-3">
+<h3 id="sec-40-4"><span class="section-number-3">40.4</span> monitor the java node</h3>
+</div>
+<div id="outline-container-sec-40-5" class="outline-3">
+<h3 id="sec-40-5"><span class="section-number-3">40.5</span> init_callback?</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-41" class="outline-2">
+<h2 id="sec-41"><span class="section-number-2">41</span> init_callback</h2>
+<div class="outline-text-2" id="text-41">
+<p>
+After we've started, there's a callback that lets you run some startup
+java code before we start accepting rpc:calls
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-42" class="outline-2">
+<h2 id="sec-42"><span class="section-number-2">42</span> Error logging</h2>
+<div class="outline-text-2" id="text-42">
+<p>
+<a href="https://github.com/joedevivo/gen_java/blob/master/src/main/erlang/gen_java.erl#L150-L152">handle_info/2</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">handle_info</span>({<span style="color: #eab700;">Port</span>, {data, {<span style="color: #eab700;">_Type</span>, <span style="color: #eab700;">Data</span>}}}, #<span style="color: #4271ae;">gen_java_state</span> { port = <span style="color: #eab700;">Port</span>, module = <span style="color: #eab700;">M</span> } = <span style="color: #eab700;">State</span>) -&gt;
+    <span style="color: #4271ae;">lager</span>:<span style="color: #4271ae;">info</span>(<span style="color: #3e999f;">"[gen_java][~p] ~s"</span>, [<span style="color: #eab700;">M</span>, <span style="color: #eab700;">Data</span>]),
+    {noreply, <span style="color: #eab700;">State</span>};
+</pre>
+</div>
+
+<p>
+Now that we've got a port running this JVM anything that java
+System.out.printlns will end up in your erlang application's log
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-43" class="outline-2">
+<h2 id="sec-43"><span class="section-number-2">43</span> Recap</h2>
+<div class="outline-text-2" id="text-43">
+</div><div id="outline-container-sec-43-1" class="outline-3">
+<h3 id="sec-43-1"><span class="section-number-3">43.1</span> We're sending rpc:calls to the java node</h3>
+</div>
+<div id="outline-container-sec-43-2" class="outline-3">
+<h3 id="sec-43-2"><span class="section-number-3">43.2</span> we can send error messages back</h3>
+<div class="outline-text-3" id="text-43-2">
+</div><div id="outline-container-sec-43-2-1" class="outline-4">
+<h4 id="sec-43-2-1"><span class="section-number-4">43.2.1</span> console</h4>
+</div>
+<div id="outline-container-sec-43-2-2" class="outline-4">
+<h4 id="sec-43-2-2"><span class="section-number-4">43.2.2</span> rpc responses</h4>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-44" class="outline-2">
+<h2 id="sec-44"><span class="section-number-2">44</span> So, what do we do with actual rpc calls?</h2>
+</div>
+
+<div id="outline-container-sec-45" class="outline-2">
+<h2 id="sec-45"><span class="section-number-2">45</span> The Easy Way : Hard Coded</h2>
+<div class="outline-text-2" id="text-45">
+<p>
+There are somethings we just want every java node to be able to do:
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-46" class="outline-2">
+<h2 id="sec-46"><span class="section-number-2">46</span> Needed by our Handshake</h2>
+<div class="outline-text-2" id="text-46">
+</div><div id="outline-container-sec-46-1" class="outline-3">
+<h3 id="sec-46-1"><span class="section-number-3">46.1</span> erlang:node/0</h3>
+</div>
+<div id="outline-container-sec-46-2" class="outline-3">
+<h3 id="sec-46-2"><span class="section-number-3">46.2</span> erlang:link/1</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-47" class="outline-2">
+<h2 id="sec-47"><span class="section-number-2">47</span> POC Methods</h2>
+<div class="outline-text-2" id="text-47">
+</div><div id="outline-container-sec-47-1" class="outline-3">
+<h3 id="sec-47-1"><span class="section-number-3">47.1</span> erlang:abs/1</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-48" class="outline-2">
+<h2 id="sec-48"><span class="section-number-2">48</span> Nice for JVM inspection</h2>
+<div class="outline-text-2" id="text-48">
+</div><div id="outline-container-sec-48-1" class="outline-3">
+<h3 id="sec-48-1"><span class="section-number-3">48.1</span> java:system_properties/0</h3>
+</div>
+<div id="outline-container-sec-48-2" class="outline-3">
+<h3 id="sec-48-2"><span class="section-number-3">48.2</span> java:system_env/0</h3>
+</div>
+<div id="outline-container-sec-48-3" class="outline-3">
+<h3 id="sec-48-3"><span class="section-number-3">48.3</span> java:input_args/0</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-49" class="outline-2">
+<h2 id="sec-49"><span class="section-number-2">49</span> WTF is the java module?!</h2>
+<div class="outline-text-2" id="text-49">
+<p>
+I made it up. I made the erlang module up to. Java doesn't have these
+</p>
+
+<p>
+Let's talk about how we map erlang MFAs
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-50" class="outline-2">
+<h2 id="sec-50"><span class="section-number-2">50</span> Needed by our Handshake</h2>
+<div class="outline-text-2" id="text-50">
+<p>
+erlang:link/1 and erlang:node/0 are special cases because they need
+information about our java node's state as a JInterface.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-51" class="outline-2">
+<h2 id="sec-51"><span class="section-number-2">51</span> All Others</h2>
+<div class="outline-text-2" id="text-51">
+</div><div id="outline-container-sec-51-1" class="outline-3">
+<h3 id="sec-51-1"><span class="section-number-3">51.1</span> must be java methods of type public static final</h3>
+</div>
+<div id="outline-container-sec-51-2" class="outline-3">
+<h3 id="sec-51-2"><span class="section-number-3">51.2</span> must have all arguments and return types of classes provided by JInterface</h3>
+</div>
+<div id="outline-container-sec-51-3" class="outline-3">
+<h3 id="sec-51-3"><span class="section-number-3">51.3</span> since java reflection is a bit expensive, we cache the Method objects.</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-52" class="outline-2">
+<h2 id="sec-52"><span class="section-number-2">52</span> Initializing the RPC Method Cache</h2>
+<div class="outline-text-2" id="text-52">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #4271ae;">Map</span>&lt;<span style="color: #4271ae;">ErlangFunctionCacheKey</span>, <span style="color: #4271ae;">Method</span>&gt; <span style="color: #eab700;">RPCCache</span> = <span style="color: #718c00;">new</span> <span style="color: #4271ae;">HashMap</span>&lt;<span style="color: #4271ae;">ErlangFunctionCacheKe</span><span style="color: #c82829; background-color: #d6d6d6;">y</span><span style="color: #c82829; background-color: #d6d6d6;">, </span><span style="color: #c82829; background-color: #d6d6d6;">Method</span><span style="color: #c82829; background-color: #d6d6d6;">&gt;();</span>
+RPCCache.put(
+        <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangFunctionCacheKey</span>(<span style="color: #3e999f;">"erlang"</span>, <span style="color: #3e999f;">"abs"</span>, OtpErlangDouble.<span style="color: #718c00;">class</span>),
+        Erlang.<span style="color: #718c00;">class</span>.getMethod(<span style="color: #3e999f;">"abs"</span>, OtpErlangDouble.<span style="color: #718c00;">class</span>));
+RPCCache.put(
+        <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangFunctionCacheKey</span>(<span style="color: #3e999f;">"erlang"</span>, <span style="color: #3e999f;">"abs"</span>, OtpErlangLong.<span style="color: #718c00;">class</span>),
+        Erlang.<span style="color: #718c00;">class</span>.getMethod(<span style="color: #3e999f;">"abs"</span>, OtpErlangLong.<span style="color: #718c00;">class</span>));
+</pre>
+</div>
+
+<p>
+last arg is variable list of classes
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-53" class="outline-2">
+<h2 id="sec-53"><span class="section-number-2">53</span> dat java module</h2>
+<div class="outline-text-2" id="text-53">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #8e908c; font-style: italic;">// </span><span style="color: #8e908c; font-style: italic;">wrapper for java.util.System.getProperties()</span>
+RPCCache.put(
+        <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangFunctionCacheKey</span>(<span style="color: #3e999f;">"java"</span>, <span style="color: #3e999f;">"system_properties"</span>),
+        Java.<span style="color: #718c00;">class</span>.getMethod(<span style="color: #3e999f;">"system_properties"</span>));
+
+RPCCache.put(
+        <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangFunctionCacheKey</span>(<span style="color: #3e999f;">"java"</span>, <span style="color: #3e999f;">"system_env"</span>),
+        Java.<span style="color: #718c00;">class</span>.getMethod(<span style="color: #3e999f;">"system_env"</span>));
+
+RPCCache.put(
+        <span style="color: #718c00;">new</span> <span style="color: #4271ae;">ErlangFunctionCacheKey</span>(<span style="color: #3e999f;">"java"</span>, <span style="color: #3e999f;">"input_arguments"</span>),
+        Java.<span style="color: #718c00;">class</span>.getMethod(<span style="color: #3e999f;">"input_arguments"</span>));
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-54" class="outline-2">
+<h2 id="sec-54"><span class="section-number-2">54</span> What about your own methods?</h2>
+<div class="outline-text-2" id="text-54">
+</div><div id="outline-container-sec-54-1" class="outline-3">
+<h3 id="sec-54-1"><span class="section-number-3">54.1</span> Module: Full Java Classname</h3>
+</div>
+<div id="outline-container-sec-54-2" class="outline-3">
+<h3 id="sec-54-2"><span class="section-number-3">54.2</span> Function: Java Method Name</h3>
+</div>
+<div id="outline-container-sec-54-3" class="outline-3">
+<h3 id="sec-54-3"><span class="section-number-3">54.3</span> Args: ARGS!</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-55" class="outline-2">
+<h2 id="sec-55"><span class="section-number-2">55</span> Caching?</h2>
+<div class="outline-text-2" id="text-55">
+<p>
+<a href="https://github.com/joedevivo/gen_java/blob/0.1.2/src/main/java/com/devivo/gen_java/ErlangServer.java#L145-L165">check the cache</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #718c00;">if</span>(RPCCache.containsKey(msg.getMFA().getKey())) {
+    <span style="color: #4271ae;">Method</span> <span style="color: #eab700;">m</span> = RPCCache.get(msg.getMFA().getKey());
+    msg.setMethod(m);
+    pool.execute(msg);
+
+} <span style="color: #718c00;">else</span> {
+    <span style="color: #8e908c; font-style: italic;">// </span><span style="color: #8e908c; font-style: italic;">This means it's not in the cache, we should try and find it</span>
+    <span style="color: #8e908c; font-style: italic;">// </span><span style="color: #8e908c; font-style: italic;">and add it.</span>
+    <span style="color: #4271ae;">Method</span> <span style="color: #eab700;">m</span> = find(msg.getMFA().getKey());
+    <span style="color: #718c00;">if</span> (m != <span style="color: #4271ae;">null</span>) {
+        RPCCache.put(msg.getMFA().getKey(), m);
+        msg.setMethod(m);
+        pool.execute(msg);
+    } <span style="color: #718c00;">else</span> {
+        System.out.println(<span style="color: #3e999f;">"Bad RPC: "</span> + msg.getMFA().getKey().toString());
+        <span style="color: #8e908c; font-style: italic;">// </span><span style="color: #8e908c; font-style: italic;">we couldn't add it, be nice and send a badrpc error back</span>
+        msg.send(msg.toErlangBadRPC());
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-56" class="outline-2">
+<h2 id="sec-56"><span class="section-number-2">56</span> Payoff!</h2>
+<div class="outline-text-2" id="text-56">
+<p>
+Reflection is only done once per method.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-57" class="outline-2">
+<h2 id="sec-57"><span class="section-number-2">57</span> Off the deep end?</h2>
+<div class="outline-text-2" id="text-57">
+<div class="org-src-container">
+
+<pre class="src src-java">pool.execute(msg);
+</pre>
+</div>
+
+<p>
+We went ahead and added some thread pooling on the java side.
+</p>
+
+<p>
+Otherwise all the processing happening in once place. what if you
+asked it to do hard things?
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-58" class="outline-2">
+<h2 id="sec-58"><span class="section-number-2">58</span> Erlang Developer Experience</h2>
+<div class="outline-text-2" id="text-58">
+<p>
+You might remember that I'm kind of a user experience nut
+</p>
+
+<p>
+<a href="http://github.com/basho/cuttlefish">Cuttlefish</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-59" class="outline-2">
+<h2 id="sec-59"><span class="section-number-2">59</span> Your Java Module</h2>
+<div class="outline-text-2" id="text-59">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-module</span>(my_java).
+<span style="color: #8959a8;">-compile</span>({parse_transform, gen_java_parse_transform}).
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-60" class="outline-2">
+<h2 id="sec-60"><span class="section-number-2">60</span> Your sys.config</h2>
+<div class="outline-text-2" id="text-60">
+<div class="org-src-container">
+
+<pre class="src src-erlang">[{gen_java, [
+     {modules, [
+         {my_java, [
+             {jar, <span style="color: #3e999f;">"/path/to/my.jar"</span>},
+             {thread_count, 10}
+                        ]}
+               ]}
+            ]}
+].
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-61" class="outline-2">
+<h2 id="sec-61"><span class="section-number-2">61</span> Your Supervisor</h2>
+<div class="outline-text-2" id="text-61">
+</div><div id="outline-container-sec-61-1" class="outline-3">
+<h3 id="sec-61-1"><span class="section-number-3">61.1</span> start it with my_java:start_link/0 or</h3>
+<div class="outline-text-3" id="text-61-1">
+<div class="org-src-container">
+
+<pre class="src src-erlang">{my_java,
+    {my_java, start_link, []},
+    permanent, 5000, worker, [my_java]},
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-62" class="outline-2">
+<h2 id="sec-62"><span class="section-number-2">62</span> Options</h2>
+<div class="outline-text-2" id="text-62">
+<p>
+#bjorn
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-63" class="outline-2">
+<h2 id="sec-63"><span class="section-number-2">63</span> init callback</h2>
+<div class="outline-text-2" id="text-63">
+<p>
+Remember that? put it here, it'll get called right after the handshake
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-spec</span> <span style="color: #4271ae;">init</span>(<span style="color: #8959a8;">atom</span>()) -&gt;<span style="color: #f5871f;"> </span>ok.
+<span style="color: #f5871f;">init</span>(<span style="color: #eab700;">Nodename</span>) -&gt;
+    <span style="color: #eab700;">SomeState</span> = {some, thing, maybe_a_file_path},
+    <span style="color: #4271ae;">rpc</span>:<span style="color: #4271ae;">call</span>(<span style="color: #eab700;">Nodename</span>, <span style="color: #3e999f;">'com.yourcompany.package'</span>, <span style="color: #3e999f;">'init'</span>, [<span style="color: #eab700;">SomeState</span>]).
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-64" class="outline-2">
+<h2 id="sec-64"><span class="section-number-2">64</span> Parse Transform</h2>
+<div class="outline-text-2" id="text-64">
+</div><div id="outline-container-sec-64-1" class="outline-3">
+<h3 id="sec-64-1"><span class="section-number-3">64.1</span> wrappers for gen_server:call</h3>
+<div class="outline-text-3" id="text-64-1">
+<div class="org-src-container">
+
+<pre class="src src-erlang">17 = <span style="color: #4271ae;">my_java</span>:<span style="color: #4271ae;">call</span>(erlang, abs, -17).
+&lt;&lt;<span style="color: #3e999f;">"your heart's desire"</span>&gt;&gt; = <span style="color: #4271ae;">my_java</span>:<span style="color: #4271ae;">call</span>(<span style="color: #3e999f;">'com.my.package'</span>,<span style="color: #3e999f;">'myMethod'</span>,[]).
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-65" class="outline-2">
+<h2 id="sec-65"><span class="section-number-2">65</span> How it does it</h2>
+<div class="outline-text-2" id="text-65">
+<p>
+Simple parse transforms are easy
+</p>
+
+<p>
+<a href="https://github.com/joedevivo/gen_java/blob/master/src/main/erlang/gen_java_parse_transform.erl">gen_java_parse_transform.erl</a>
+</p>
+
+<p>
+This whole file just looks for a module's name, and subs it in to 5
+functions
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-66" class="outline-2">
+<h2 id="sec-66"><span class="section-number-2">66</span> 5 Functions</h2>
+<div class="outline-text-2" id="text-66">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-export</span>([<span style="color: #4271ae;">start_link/0</span>,<span style="color: #4271ae;">start/0</span>,<span style="color: #4271ae;">call/3</span>,<span style="color: #4271ae;">call/4</span>,<span style="color: #4271ae;">stop/0</span>]).
+
+<span style="color: #f5871f;">stop</span>() -&gt;
+    <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">stop</span>(my_java).
+
+<span style="color: #f5871f;">call</span>(<span style="color: #eab700;">Module</span>, <span style="color: #eab700;">Function</span>, <span style="color: #eab700;">Args</span>, <span style="color: #eab700;">Timeout</span>) -&gt;
+    <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">call</span>(my_java, <span style="color: #eab700;">Module</span>, <span style="color: #eab700;">Function</span>, <span style="color: #eab700;">Args</span>, <span style="color: #eab700;">Timeout</span>).
+
+<span style="color: #f5871f;">call</span>(<span style="color: #eab700;">Module</span>, <span style="color: #eab700;">Function</span>, <span style="color: #eab700;">Args</span>) -&gt;
+    <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">call</span>(my_java, <span style="color: #eab700;">Module</span>, <span style="color: #eab700;">Function</span>, <span style="color: #eab700;">Args</span>).
+
+<span style="color: #f5871f;">start</span>() -&gt;
+    <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">start</span>(my_java).
+
+<span style="color: #f5871f;">start_link</span>() -&gt;
+    <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">start_link</span>(my_java).
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-67" class="outline-2">
+<h2 id="sec-67"><span class="section-number-2">67</span> That's it!</h2>
+<div class="outline-text-2" id="text-67">
+</div><div id="outline-container-sec-67-1" class="outline-3">
+<h3 id="sec-67-1"><span class="section-number-3">67.1</span> Let's look at one</h3>
+<div class="outline-text-3" id="text-67-1">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">func</span>({call, 4}, <span style="color: #eab700;">L</span>, #<span style="color: #4271ae;">state</span>{module=<span style="color: #eab700;">Module</span>}) -&gt;
+      {function,<span style="color: #eab700;">L</span>,call,4,
+          [{clause,<span style="color: #eab700;">L</span>,
+               [{var,<span style="color: #eab700;">L</span>,<span style="color: #3e999f;">'Module'</span>},{var,<span style="color: #eab700;">L</span>,<span style="color: #3e999f;">'Function'</span>},{var,<span style="color: #eab700;">L</span>,<span style="color: #3e999f;">'Args'</span>},{var,<span style="color: #eab700;">L</span>,<span style="color: #3e999f;">'Timeout'</span>}],
+               [],
+               [{call,<span style="color: #eab700;">L</span>,
+                    {remote,<span style="color: #eab700;">L</span>,{atom,<span style="color: #eab700;">L</span>,gen_java},{atom,<span style="color: #eab700;">L</span>,call}},
+                    [{atom,<span style="color: #eab700;">L</span>,<span style="color: #eab700;">Module</span>},
+                     {var,<span style="color: #eab700;">L</span>,<span style="color: #3e999f;">'Module'</span>},
+                     {var,<span style="color: #eab700;">L</span>,<span style="color: #3e999f;">'Function'</span>},
+                     {var,<span style="color: #eab700;">L</span>,<span style="color: #3e999f;">'Args'</span>},
+                     {var,<span style="color: #eab700;">L</span>,<span style="color: #3e999f;">'Timeout'</span>}]}]}]}.
+</pre>
+</div>
+
+<p>
+There's only two variables in that whole mess
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-67-2" class="outline-3">
+<h3 id="sec-67-2"><span class="section-number-3">67.2</span> L : The line number at which this code goes</h3>
+</div>
+<div id="outline-container-sec-67-3" class="outline-3">
+<h3 id="sec-67-3"><span class="section-number-3">67.3</span> Module: The name of the module we're calling</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-68" class="outline-2">
+<h2 id="sec-68"><span class="section-number-2">68</span> Generated Function</h2>
+<div class="outline-text-2" id="text-68">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">call</span>(<span style="color: #eab700;">Module</span>, <span style="color: #eab700;">Function</span>, <span style="color: #eab700;">Args</span>, <span style="color: #eab700;">Timeout</span>) -&gt;
+    <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">call</span>(my_java, <span style="color: #eab700;">Module</span>, <span style="color: #eab700;">Function</span>, <span style="color: #eab700;">Args</span>, <span style="color: #eab700;">Timeout</span>).
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-69" class="outline-2">
+<h2 id="sec-69"><span class="section-number-2">69</span> Abstract Forms</h2>
+<div class="outline-text-2" id="text-69">
+<p>
+All that gobbledy gook is an Abstract Form. You can make Artesianal
+Handcrafted Abstract Forms, but for things like this there's an
+easier way
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang">F = <span style="color: #718c00;">fun</span>(<span style="color: #eab700;">S</span>) -&gt;
+    {ok, <span style="color: #eab700;">T</span>, <span style="color: #eab700;">_</span>} = <span style="color: #4271ae;">erl_scan</span>:<span style="color: #4271ae;">string</span>(<span style="color: #eab700;">S</span>),
+    {ok, <span style="color: #eab700;">AbsForm</span>} = <span style="color: #4271ae;">erl_parse</span>:<span style="color: #4271ae;">parse_form</span>(<span style="color: #eab700;">T</span>),
+    <span style="color: #eab700;">AbsForm</span>
+<span style="color: #718c00;">end</span>.
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-70" class="outline-2">
+<h2 id="sec-70"><span class="section-number-2">70</span> Your own Abstract Form</h2>
+<div class="outline-text-2" id="text-70">
+<div class="org-src-container">
+
+<pre class="src src-erlang">F(<span style="color: #3e999f;">"call(Module, Function, Args, Timeout) -&gt;</span>
+<span style="color: #3e999f;">    gen_java:call(my_java, Module, Function, Args, Timeout)."</span>).
+{function,1,call,4,
+          [{clause,1,
+                   [{var,1,<span style="color: #3e999f;">'Module'</span>},
+                    {var,1,<span style="color: #3e999f;">'Function'</span>},
+                    {var,1,<span style="color: #3e999f;">'Args'</span>},
+                    {var,1,<span style="color: #3e999f;">'Timeout'</span>}],
+                   [],
+                   [{call,2,
+                          {remote,2,{atom,2,gen_java},{atom,2,call}},
+                          [{atom,2,my_java},
+                           {var,2,<span style="color: #3e999f;">'Module'</span>},
+                           {var,2,<span style="color: #3e999f;">'Function'</span>},
+                           {var,2,<span style="color: #3e999f;">'Args'</span>},
+                           {var,2,<span style="color: #3e999f;">'Timeout'</span>}]}]}]}
+</pre>
+</div>
+
+<p>
+To add it to your own parse transform, you just have to sub all those
+1's and 2's with L and all those my_java's with Module
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-71" class="outline-2">
+<h2 id="sec-71"><span class="section-number-2">71</span> Adding convenience</h2>
+<div class="outline-text-2" id="text-71">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-spec</span> <span style="color: #4271ae;">my_method</span>(<span style="color: #8959a8;">binary</span>()) -&gt;<span style="color: #f5871f;"> </span><span style="color: #8959a8;">binary</span>() | <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">badrpc</span>().
+<span style="color: #f5871f;">my_method</span>(<span style="color: #eab700;">Binary</span>) -&gt;
+    <span style="color: #4271ae;">call</span>(<span style="color: #3e999f;">'com.my.package'</span>,<span style="color: #3e999f;">'myMethod'</span>,[<span style="color: #eab700;">Binary</span>]).
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-72" class="outline-2">
+<h2 id="sec-72"><span class="section-number-2">72</span> Then using java in your app is as easy as</h2>
+<div class="outline-text-2" id="text-72">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #4271ae;">my_java</span>:<span style="color: #4271ae;">my_method</span>(<span style="color: #eab700;">Binary</span>).
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-73" class="outline-2">
+<h2 id="sec-73"><span class="section-number-2">73</span> Bringing it Back to CHEF Analytics</h2>
+<div class="outline-text-2" id="text-73">
+</div><div id="outline-container-sec-73-1" class="outline-3">
+<h3 id="sec-73-1"><span class="section-number-3">73.1</span> erlaska_rules is out!</h3>
+</div>
+<div id="outline-container-sec-73-2" class="outline-3">
+<h3 id="sec-73-2"><span class="section-number-3">73.2</span> alaska_rules.jar is in!</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-74" class="outline-2">
+<h2 id="sec-74"><span class="section-number-2">74</span> sys.config</h2>
+<div class="outline-text-2" id="text-74">
+<div class="org-src-container">
+
+<pre class="src src-erlang">[{gen_java, [
+     {modules, [
+         {alaska_rules, [
+             {jar, <span style="color: #3e999f;">"priv/alaska_rules.jar"</span>},
+             {thread_count, 10}
+                        ]}
+               ]}
+            ]}
+].
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-75" class="outline-2">
+<h2 id="sec-75"><span class="section-number-2">75</span> alaska_rules.erl</h2>
+<div class="outline-text-2" id="text-75">
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #8959a8;">-module</span>(alaska_rules).
+
+<span style="color: #8959a8;">-compile</span>({parse_transform, gen_java_parse_transform}).
+
+<span style="color: #8959a8;">-export</span>([<span style="color: #4271ae;">valid_rule/1</span>, <span style="color: #4271ae;">valid_rule_group/1</span>, <span style="color: #4271ae;">init/1</span>]).
+
+<span style="color: #8959a8;">-spec</span> <span style="color: #4271ae;">valid_rule</span>(<span style="color: #8959a8;">binary</span>()) -&gt;<span style="color: #f5871f;"> </span>true | {error, <span style="color: #8959a8;">string</span>()} | <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">badrpc</span>().
+<span style="color: #f5871f;">valid_rule</span>(<span style="color: #eab700;">Bin</span>) -&gt;
+    <span style="color: #4271ae;">call</span>(<span style="color: #3e999f;">'com.chef.analytics.rules.erlang.RuleValidator'</span>, <span style="color: #3e999f;">'validRule'</span>, [<span style="color: #eab700;">Bin</span>]).
+
+<span style="color: #8959a8;">-spec</span> <span style="color: #4271ae;">valid_rule_group</span>(<span style="color: #8959a8;">binary</span>()) -&gt;<span style="color: #f5871f;"> </span>true | {error, <span style="color: #8959a8;">string</span>()} | <span style="color: #4271ae;">gen_java</span>:<span style="color: #4271ae;">badrpc</span>().
+<span style="color: #f5871f;">valid_rule_group</span>(<span style="color: #eab700;">Bin</span>) -&gt;
+    <span style="color: #4271ae;">call</span>(<span style="color: #3e999f;">'com.chef.analytics.rules.erlang.RuleValidator'</span>, <span style="color: #3e999f;">'validRuleGroup'</span>, [<span style="color: #eab700;">Bin</span>]).
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-76" class="outline-2">
+<h2 id="sec-76"><span class="section-number-2">76</span> init/1</h2>
+<div class="outline-text-2" id="text-76">
+<p>
+We have some JSON schemas that alaksa_rules.jar uses for validation of attributes.
+</p>
+
+<p>
+init/1 reads them in as a list of binaries and then sends them over to the java node
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-erlang"><span style="color: #f5871f;">init</span>(<span style="color: #eab700;">Nodename</span>) -&gt;
+    <span style="color: #eab700;">Dir</span> = <span style="color: #4271ae;">schema_dir</span>(),
+    <span style="color: #eab700;">JSONSchemas</span> = <span style="color: #4271ae;">filelib</span>:<span style="color: #4271ae;">wildcard</span>(<span style="color: #4271ae;">filename</span>:<span style="color: #4271ae;">join</span>([<span style="color: #eab700;">Dir</span>, <span style="color: #3e999f;">"*.json"</span>])),
+    <span style="color: #eab700;">Schemas</span> = [<span style="color: #718c00;">begin</span>
+                   {ok, <span style="color: #eab700;">Bin</span>} = <span style="color: #4271ae;">file</span>:<span style="color: #4271ae;">read_file</span>(<span style="color: #eab700;">Filename</span>),
+                   {<span style="color: #8959a8;">list_to_atom</span>(<span style="color: #4271ae;">filename</span>:<span style="color: #4271ae;">basename</span>(<span style="color: #eab700;">Filename</span>)), <span style="color: #eab700;">Bin</span>}
+               <span style="color: #718c00;">end</span> <span style="color: #718c00;">||</span> <span style="color: #eab700;">Filename</span> <span style="color: #718c00;">&lt;-</span> <span style="color: #eab700;">JSONSchemas</span>],
+    <span style="color: #4271ae;">rpc</span>:<span style="color: #4271ae;">call</span>(<span style="color: #eab700;">Nodename</span>,
+             <span style="color: #3e999f;">'com.chef.analytics.rules.erlang.RuleValidator'</span>, <span style="color: #3e999f;">'setSchemas'</span>, [<span style="color: #eab700;">Schemas</span>]),
+    ok.
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-77" class="outline-2">
+<h2 id="sec-77"><span class="section-number-2">77</span> Wraping Up</h2>
+<div class="outline-text-2" id="text-77">
+<p>
+All in all, this is just a wrapper for the hard stuff Erlang gave us
+for free. But what if they didn't?
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-78" class="outline-2">
+<h2 id="sec-78"><span class="section-number-2">78</span> Erlang Haskell Interface</h2>
+<div class="outline-text-2" id="text-78">
+<p>
+<a href="https://github.com/joedevivo/erlang-haskell-interface">github source</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-79" class="outline-2">
+<h2 id="sec-79"><span class="section-number-2">79</span> Erlang gives you zero Haskell for free</h2>
+<div class="outline-text-2" id="text-79">
+<p>
+But somebody did: <a href="http://hackage.haskell.org/package/erlang-0.1">hackage erlang-0.1</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-80" class="outline-2">
+<h2 id="sec-80"><span class="section-number-2">80</span> What I got:</h2>
+</div>
+
+<div id="outline-container-sec-81" class="outline-2">
+<h2 id="sec-81"><span class="section-number-2">81</span> Erlang Types</h2>
+<div class="outline-text-2" id="text-81">
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #718c00;">data</span> <span style="color: #4271ae;">ErlType</span> <span style="color: #eab700;">=</span> <span style="color: #4271ae;">ErlNull</span>
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlInt</span> <span style="color: #4271ae;">Int</span>
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlBigInt</span> <span style="color: #4271ae;">Integer</span>
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlString</span> <span style="color: #4271ae;">String</span>
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlAtom</span> <span style="color: #4271ae;">String</span>
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlBinary</span> [<span style="color: #4271ae;">Word8</span>]
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlList</span> [<span style="color: #4271ae;">ErlType</span>]
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlTuple</span> [<span style="color: #4271ae;">ErlType</span>]
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlPid</span> <span style="color: #4271ae;">ErlType</span> <span style="color: #4271ae;">Int</span> <span style="color: #4271ae;">Int</span> <span style="color: #4271ae;">Int</span>     <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">node id serial creation</span>
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlPort</span> <span style="color: #4271ae;">ErlType</span> <span style="color: #4271ae;">Int</span> <span style="color: #4271ae;">Int</span>        <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">node id creation</span>
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlRef</span> <span style="color: #4271ae;">ErlType</span> <span style="color: #4271ae;">Int</span> <span style="color: #4271ae;">Int</span>         <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">node id creation</span>
+             <span style="color: #eab700;">|</span> <span style="color: #4271ae;">ErlNewRef</span> <span style="color: #4271ae;">ErlType</span> <span style="color: #4271ae;">Int</span> [<span style="color: #4271ae;">Word8</span>]  <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">node creation id</span>
+             <span style="color: #718c00;">deriving</span> (<span style="color: #4271ae;">Eq</span>, <span style="color: #4271ae;">Show</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-82" class="outline-2">
+<h2 id="sec-82"><span class="section-number-2">82</span> Packing functions</h2>
+<div class="outline-text-2" id="text-82">
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #f5871f;">putC</span> <span style="color: #eab700;">=</span> putWord8 <span style="color: #eab700;">.</span> fromIntegral
+<span style="color: #f5871f;">putn</span> <span style="color: #eab700;">=</span> putWord16be <span style="color: #eab700;">.</span> fromIntegral
+<span style="color: #f5871f;">putN</span> <span style="color: #eab700;">=</span> putWord32be <span style="color: #eab700;">.</span> fromIntegral
+<span style="color: #f5871f;">puta</span> <span style="color: #eab700;">=</span> putByteString <span style="color: #eab700;">.</span> <span style="color: #4d4d4c; background-color: #ffffff;">B.pack</span>
+<span style="color: #f5871f;">putA</span> <span style="color: #eab700;">=</span> putByteString <span style="color: #eab700;">.</span> <span style="color: #4d4d4c; background-color: #ffffff;">C.pack</span>
+
+<span style="color: #f5871f;">getC</span> <span style="color: #eab700;">=</span> liftM fromIntegral getWord8
+<span style="color: #f5871f;">getn</span> <span style="color: #eab700;">=</span> liftM fromIntegral getWord16be
+<span style="color: #f5871f;">getN</span> <span style="color: #eab700;">=</span> liftM fromIntegral getWord32be
+<span style="color: #f5871f;">geta</span> <span style="color: #eab700;">=</span> liftM <span style="color: #4d4d4c; background-color: #ffffff;">B.unpack</span> <span style="color: #eab700;">.</span> getByteString
+<span style="color: #f5871f;">getA</span> <span style="color: #eab700;">=</span> liftM <span style="color: #4d4d4c; background-color: #ffffff;">C.unpack</span> <span style="color: #eab700;">.</span> getByteString
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-83" class="outline-2">
+<h2 id="sec-83"><span class="section-number-2">83</span> Half a Protocol</h2>
+<div class="outline-text-2" id="text-83">
+<p>
+Looks like erlang-0.1 knew how to connect to an Erlang node from Haskell
+</p>
+
+<p>
+It wanted it one way, but I wanted the other
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-84" class="outline-2">
+<h2 id="sec-84"><span class="section-number-2">84</span> Getting the old one working</h2>
+<div class="outline-text-2" id="text-84">
+<p>
+nano-md5 dependency didn't work anymore, so replaced with PureMD5
+</p>
+
+<p>
+<a href="https://wiki.haskell.org/Applications_and_libraries/Interfacing_other_languages/Erlang">Existing Documentation</a> wasn't great
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-85" class="outline-2">
+<h2 id="sec-85"><span class="section-number-2">85</span> Spinning up a Haskell Erlang node</h2>
+<div class="outline-text-2" id="text-85">
+<p>
+<a href="https://github.com/joedevivo/erlang-haskell-interface/blob/master/Test.hs#L17-L30">start</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #f5871f;">start</span> nodename <span style="color: #eab700;">=</span> <span style="color: #718c00;">do</span>
+    setupLoggers <span style="color: #4271ae;">DEBUG</span>
+
+    infoM <span style="color: #3e999f;">"Test"</span> <span style="color: #eab700;">$</span> <span style="color: #3e999f;">"Starting Node: "</span> <span style="color: #eab700;">++</span> nodename
+    self <span style="color: #eab700;">&lt;-</span> createSelf nodename
+    mbox <span style="color: #eab700;">&lt;-</span> createMBox self
+    debugM <span style="color: #3e999f;">"Test"</span> <span style="color: #eab700;">$</span> <span style="color: #3e999f;">"mbox: "</span> <span style="color: #eab700;">++</span> (show mbox)
+
+    <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">Rex spawned here, because it's our job as consumers of this</span>
+    <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">module to consume these</span>
+    forever <span style="color: #eab700;">$</span> <span style="color: #718c00;">do</span>
+    rex_mbox <span style="color: #eab700;">&lt;-</span> createNamedMBox <span style="color: #3e999f;">"rex"</span> self
+    forkIO <span style="color: #eab700;">$</span> rex rex_mbox
+    return <span style="color: #4271ae;">()</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-86" class="outline-2">
+<h2 id="sec-86"><span class="section-number-2">86</span> createSelf</h2>
+<div class="outline-text-2" id="text-86">
+<p>
+<a href="https://github.com/joedevivo/erlang-haskell-interface/blob/master/src/Foreign/Erlang/Processes.hs#L66-L79">Processes.hs</a>
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #8959a8;">-- | Instantiate a Haskell node.  This initializes the FFI.</span>
+<span style="color: #f5871f;">createSelf</span>          <span style="color: #eab700;">::</span> <span style="color: #4271ae;">String</span> <span style="color: #eab700;">-&gt;</span> <span style="color: #4271ae;">IO</span> <span style="color: #4271ae;">Self</span>
+<span style="color: #f5871f;">createSelf</span> nodename <span style="color: #eab700;">=</span> <span style="color: #718c00;">do</span>
+    inbox <span style="color: #eab700;">&lt;-</span> newEmptyMVar
+    forkIO <span style="color: #eab700;">$</span> serve nodename inbox
+    forkIO <span style="color: #eab700;">$</span> self nodename inbox
+
+    node <span style="color: #eab700;">&lt;-</span> return <span style="color: #eab700;">.</span>  <span style="color: #4271ae;">Self</span> <span style="color: #eab700;">$</span> putMVar inbox
+
+    <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">Try spawning net_kernel mbox</span>
+    nk_mbox <span style="color: #eab700;">&lt;-</span> createNamedMBox <span style="color: #3e999f;">"net_kernel"</span> node
+    forkIO <span style="color: #eab700;">$</span> net_kernel nk_mbox
+
+    return node  <span style="color: #8e908c; font-style: italic;">--</span><span style="color: #8e908c; font-style: italic;">Self $ putMVar inbox</span>
+</pre>
+</div>
+
+<p>
+serve is the function that connects to epmd, opens up a listener and then puts messages in a mbox
+</p>
+
+<p>
+self is the thing that routes those messages
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-87" class="outline-2">
+<h2 id="sec-87"><span class="section-number-2">87</span> serve</h2>
+</div>
+
+<div id="outline-container-sec-88" class="outline-2">
+<h2 id="sec-88"><span class="section-number-2">88</span> Learning EPMD</h2>
+<div class="outline-text-2" id="text-88">
+<p>
+<a href="http://www.erlang.org/doc/man/epmd.html">epmd</a>
+<a href="http://www.erlang.org/doc/apps/erts/erl_dist_protocol.html">protocol documentation</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-89" class="outline-2">
+<h2 id="sec-89"><span class="section-number-2">89</span> Reserving a port</h2>
+<div class="outline-text-2" id="text-89">
+<p>
+EMPD_ALIVE2_REQ
+</p>
+
+<p>
+Open a socked with this request and keep it open&#x2026; forever.
+</p>
+
+<p>
+Here's the message EPMD expects
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="right" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="right">Bytes</th>
+<th scope="col" class="left">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="right">1</td>
+<td class="left">120</td>
+</tr>
+
+<tr>
+<td class="right">2</td>
+<td class="left">Port to reserve</td>
+</tr>
+
+<tr>
+<td class="right">1</td>
+<td class="left">77 (means normal erlang node)</td>
+</tr>
+
+<tr>
+<td class="right">1</td>
+<td class="left">Protocol (0 = tcp/ipv4)</td>
+</tr>
+
+<tr>
+<td class="right">2</td>
+<td class="left">Highest version (5 = R6B and higher)</td>
+</tr>
+
+<tr>
+<td class="right">2</td>
+<td class="left">Lowest version (5 = R6B and higher)</td>
+</tr>
+
+<tr>
+<td class="right">2</td>
+<td class="left">Length in bytes of nodename field</td>
+</tr>
+
+<tr>
+<td class="right">X</td>
+<td class="left">Nodename, X = ^^</td>
+</tr>
+
+<tr>
+<td class="right">2</td>
+<td class="left">Length of Extras, we used 0</td>
+</tr>
+
+<tr>
+<td class="right">Y</td>
+<td class="left">Extras, length ^^, but we sent none</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-90" class="outline-2">
+<h2 id="sec-90"><span class="section-number-2">90</span> What's that look like?</h2>
+<div class="outline-text-2" id="text-90">
+
+<div class="figure">
+<p><img src="./img/EPMD_ALIVE2_REQ.png" alt="EPMD_ALIVE2_REQ.png" />
+</p>
+<p><span class="figure-number">Figure 1:</span> Wiretap of ALIVE2_REQ</p>
+</div>
+
+
+<div class="figure">
+<p><img src="./img/EPMD_ALIVE2_RESP.png" alt="EPMD_ALIVE2_RESP.png" />
+</p>
+<p><span class="figure-number">Figure 2:</span> Bytes of ALIVE2_RESP</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-91" class="outline-2">
+<h2 id="sec-91"><span class="section-number-2">91</span> Haskell Does It</h2>
+<div class="outline-text-2" id="text-91">
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #f5871f;">epmdAlive2Req</span> <span style="color: #eab700;">::</span> <span style="color: #4271ae;">String</span> <span style="color: #eab700;">-&gt;</span> <span style="color: #4271ae;">Int</span> <span style="color: #eab700;">-&gt;</span> <span style="color: #4271ae;">IO</span> <span style="color: #4271ae;">()</span>
+<span style="color: #f5871f;">epmdAlive2Req</span> node port <span style="color: #eab700;">=</span> withEpmd <span style="color: #eab700;">$</span> <span style="color: #eab700;">\</span>hdl <span style="color: #eab700;">-&gt;</span> <span style="color: #718c00;">do</span>
+    <span style="color: #718c00;">let</span> msg <span style="color: #eab700;">=</span> runPut <span style="color: #eab700;">$</span> tag <span style="color: #3e999f;">'x'</span> <span style="color: #eab700;">&gt;&gt;</span>
+                       putn port <span style="color: #eab700;">&gt;&gt;</span>
+                       putC 77 <span style="color: #eab700;">&gt;&gt;</span> <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">node type</span>
+                       putC 0 <span style="color: #eab700;">&gt;&gt;</span>  <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">protocol</span>
+                       putn erlangVersion <span style="color: #eab700;">&gt;&gt;</span>
+                       putn erlangVersion <span style="color: #eab700;">&gt;&gt;</span>
+                       putn (length node) <span style="color: #eab700;">&gt;&gt;</span>
+                       putA node <span style="color: #eab700;">&gt;&gt;</span>
+                       putn 0 <span style="color: #8e908c; font-style: italic;">-- </span><span style="color: #8e908c; font-style: italic;">"Extra" length, 0 for none</span>
+    <span style="color: #718c00;">let</span> len <span style="color: #eab700;">=</span> fromIntegral <span style="color: #eab700;">$</span> <span style="color: #4d4d4c; background-color: #ffffff;">B.length</span> msg
+    <span style="color: #718c00;">let</span> out <span style="color: #eab700;">=</span> runPut <span style="color: #eab700;">$</span> putn len <span style="color: #eab700;">&gt;&gt;</span> putLazyByteString msg
+    forever <span style="color: #eab700;">$</span> <span style="color: #718c00;">do</span>
+    <span style="color: #4d4d4c; background-color: #ffffff;">B.hPut</span> hdl out
+    hFlush hdl
+    <span style="color: #4d4d4c; background-color: #ffffff;">B.hGetContents</span> hdl
+    return <span style="color: #4271ae;">()</span>
+</pre>
+</div>
+
+<p>
+See that forever call. just hang out letting EPMD know you still love it.
+</p>
+
+<p>
+TIL: You can run `empd -debug` to see what's coming across the wire through EPMD
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-92" class="outline-2">
+<h2 id="sec-92"><span class="section-number-2">92</span> The Distribution Handshake</h2>
+<div class="outline-text-2" id="text-92">
+<p>
+<a href="http://www.erlang.org/doc/apps/erts/erl_dist_protocol.html#id92374">Handshake Documentation</a>
+</p>
+
+<p>
+ALIVE2_REQ isn't even a quarter of the handshake.
+</p>
+
+<p>
+We also have to do a back and forth over the port we're actually listening on
+</p>
+
+<pre class="example">
+send_name            ------&gt;            recv_name
+
+recv_status          &lt;------          send_status
+
+send_status          ------&gt;          recv_status
+
+recv_challenge       &lt;------       send_challenge
+
+send_challenge_reply ------&gt; recv_challenge_reply
+
+recv_challege_ack    &lt;------   send_challenge_ack
+</pre>
+
+<p>
+Let's gloss over this. If you want to see it, I did it here: <a href="https://github.com/joedevivo/erlang-haskell-interface/blob/master/src/Foreign/Erlang/Network.hs#L197-L248">Network.hs</a>
+</p>
+</div>
+
+<div id="outline-container-sec-92-1" class="outline-3">
+<h3 id="sec-92-1"><span class="section-number-3">92.1</span> Funky Middle Syntax</h3>
+<div class="outline-text-3" id="text-92-1">
+<p>
+<a href="http://www.erlang.org/doc/apps/erts/erl_dist_protocol.html#id92768">Protocol between connected nodes</a>
+</p>
+
+<p>
+Turns out we need to figure out how to interpret Erlangy packets coming in now
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Joe DeVivo</p>
+<p class="date">Created: 2015-03-12 Thu 08:32</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
