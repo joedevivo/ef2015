@@ -917,11 +917,10 @@ Here's the message EPMD expects
 
 * What's that look like?
 #+CAPTION: Wiretap of ALIVE2_REQ
- [[img/EPMD_ALIVE2_REQ.png]]
+ [[./img/EPMD_ALIVE2_REQ.png]]
 
 #+CAPTION: Bytes of ALIVE2_RESP
-[[img/EPMD_ALIVE2_RESP.png]]
-
+[[./img/EPMD_ALIVE2_RESP.png]]
 
 * Haskell Does It
 #+BEGIN_SRC haskell
