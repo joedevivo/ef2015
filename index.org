@@ -39,17 +39,16 @@ BUY MY CONFIGURATION MANAGEMENT INFRASTRUCTURE
 You write rules [[http://docs.chef.io/analytics/analytics_rules.html][Rule Documentation]]
 
 #+BEGIN_SRC
-rules 'Rule 1' with priority = 1
-  rule on action
-    when true
-    then notify('hipchat')
-  end
-end
-
-rules 'Rule 2' with priority = 2
-  rule on action
-    when task = 'associate'
-    then notify('webhook')
+rules 'PCI 2.3 – Confirm telnet port not available'
+ rule on run_control
+  when
+    name = 'telnet not listening' and
+    resource_type = 'port' and
+    resource_name = '23' and
+    status != 'success'
+  then
+    audit:error("PCI 2.3 - Encrypt all non-console administrative access such as browser/Web-based management tools.")
+    notify("security-team@financialcorp.com", "{{run.node_name}} is listening for connections on port 23/telnet!")
   end
 end
 #+END_SRC
