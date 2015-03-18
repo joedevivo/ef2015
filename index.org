@@ -1,10 +1,10 @@
 # -*- eval: (linum-mode 0); -*-
 #+STARTUP: showeverything
+* _
 #+TITLE: gen_java: easy java for erlang
 #+AUTHOR: Joe DeVivo
 #+OPTIONS: ^:{}
 
-* gen_java
 ** Joe DeVivo
 ** [[http://twitter.com/joedevivo][@joedevivo]]
 ** [[http://chef.io][CHEF]]
@@ -47,8 +47,10 @@ rules 'PCI 2.3 – Confirm telnet port not available'
     resource_name = '23' and
     status != 'success'
   then
-    audit:error("PCI 2.3 - Encrypt all non-console administrative access such as browser/Web-based management tools.")
-    notify("security-team@financialcorp.com", "{{run.node_name}} is listening for connections on port 23/telnet!")
+    audit:error("PCI 2.3 - Encrypt all non-console administrative \
+                 access such as browser/Web-based management tools.")
+    notify("security-team@financialcorp.com",
+           "{{run.node_name}} is listening for connections on port 23/telnet!")
   end
 end
 #+END_SRC
@@ -68,7 +70,12 @@ More info on that:
 *** [[http://www.espertech.com/esper/][Esper]]
 
 * Configuration Web Service
-** Built on Erlang / [[http://github.com/basho/webmachine][Webmachine]] / [[http://github.org/chef/sqerl][Sqerl]]
+
+** Erlang
+** [[http://github.com/basho/webmachine][Webmachine]]
+REST Framework
+**  [[http://github.org/chef/sqerl][Sqerl]]
+Lightweight ORM on top of epgsql
 
 * Validating Rules
 ** Dave likes writing parsers, so he gave us
@@ -79,7 +86,8 @@ More info on that:
 Neotoma is a packrat parser-generator for Erlang for Parsing
 Expression Grammars (PEGs).
 
-The important thing being that it's different from how ANTLR does grammars
+The important thing being that it's different from how
+ANTLR does grammars
 
 erlaska_rules only ever validated syntax, whereas alaska_rules is an
 actual compiler that generates code to evaluate in the pipeline
@@ -102,7 +110,7 @@ This worked fine at first, but every change to the grammar had to be
 duplicated. Well, it turns out that we never got that far. We never
 actually achieved 100% compatibility.
 
- * What If?
+* What If?
 We could call the Java parser from Erlang?
 
 We've already got the ANTLR grammar, which is the definitive truth for
@@ -145,7 +153,7 @@ Note: My OTP source links will all be to the tag R16B03-1
 I already knew that RPC calls were handled by a process called `rex`,
 so I stared digging around the Erlang source for it
 
-https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L344
+[[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L344][rpc.erl]]
 
 #+BEGIN_SRC erlang
 %% In the source for rpc.erl
@@ -157,7 +165,7 @@ That's in rpc:do_call
 
 * So, what's `Request` look like?
 
-https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L296
+[[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L296][rpc:call]]
 #+BEGIN_SRC erlang
 %% rpc:call source
 call(N,M,F,A,infinity) when node() =:= N ->  %% Optimize local call
@@ -291,7 +299,9 @@ Source [[https://github.com/joedevivo/gen_java/blob/0.1.2/src/main/java/com/devi
 OtpErlangTuple rexCall = (OtpErlangTuple)o;
 int arity = rexCall.arity();
 if (arity != 3) {
-    throw new Exception("Rex message has invalid arity. expected 3, got " + arity);
+    throw new Exception(
+       "Rex message has invalid arity. expected 3, got "
+       + arity);
 }
 #+END_SRC
 
@@ -303,7 +313,9 @@ Remember the 1st element? '$gen_call'
 OtpErlangAtom gen_call = (OtpErlangAtom)(rexCall.elementAt(0));
 String gen_call_string = gen_call.atomValue();
 if (!gen_call_string.equals("$gen_call")) {
-    throw new Exception("Rex message should start with '$gen_call': " + o.toString());
+    throw new Exception(
+        "Rex message should start with '$gen_call': "
+        + o.toString());
 }
 #+END_SRC
 
@@ -312,25 +324,30 @@ if (!gen_call_string.equals("$gen_call")) {
 OtpErlangTuple fromTuple = (OtpErlangTuple)(rexCall.elementAt(1));
 int fromArity = fromTuple.arity();
 if (fromArity != 2) {
-    throw new Exception("Rex message's 'from' tuple should have 2 elements, has " + fromArity + ": " + o.toString());
+    throw new Exception(
+        "Rex message's 'from' tuple should have 2 elements, has "
+         + fromArity + ": " + o.toString());
 }
 this.fromPid = (OtpErlangPid)(fromTuple.elementAt(0));
 this.fromRef = (OtpErlangRef)(fromTuple.elementAt(1));
 #+END_SRC
 
-* Validate the call tuple: {call::atom, Mod::atom, Fun::atom, List::list(), user:atom()}
+* Validate the call tuple:
+{call::atom, Mod::atom, Fun::atom, List::list(), user:atom()}
 #+BEGIN_SRC java
 OtpErlangTuple callTuple = (OtpErlangTuple)(rexCall.elementAt(2));
 int callArity = callTuple.arity();
 if (callArity != 5) {
     throw new ErlangRemoteException(this.fromPid, this.fromRef,
-              "Rex message's 'call' tuple should have 5 elements, has " + callArity + ": " + o.toString());
+              "Rex message's 'call' tuple should have 5 elements, has "
+               + callArity + ": " + o.toString());
 }
 OtpErlangAtom callAtom = (OtpErlangAtom)(callTuple.elementAt(0));
 String callString = callAtom.atomValue();
 if (!callString.equals("call")) {
     throw new ErlangRemoteException(this.fromPid, this.fromRef,
-              "Rex message's call block should start with 'call', but it's : " + callString);
+              "Rex message's call block should start with 'call', but it's : "
+               + callString);
 }
 #+END_SRC
 
@@ -362,7 +379,8 @@ public static OtpErlangObject toErlangException(Exception e) {
 #+END_SRC
 
 * Exception Handling: send
-send knows just enough about erlang/rex to send an error message back to rpc:call
+send knows just enough about erlang/rex to send
+an error message back to rpc:call
 
 We forgot to look at that! Fortunately it's here in [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/stdlib/src/gen.erl#L211-L214][gen:do_call]]
 
@@ -428,11 +446,13 @@ Opens a port running your jar in the JVM
 
 #+BEGIN_SRC erlang
 case wait_until(
-            fun() ->
-                X = rpc:call(Nodename, erlang, node, [], 10000),
-                lager:debug("[gen_java][~p] rpc:call(~p, erlang, node, []) = ~p", [Module, Nodename, X]),
-                Nodename =:= X
-            end, 20, 1000) of
+        fun() ->
+            X = rpc:call(Nodename, erlang, node, [], 10000),
+            lager:debug(
+                "[gen_java][~p] rpc:call(~p, erlang, node, []) = ~p",
+                [Module, Nodename, X]),
+            Nodename = : = X
+        end, 20, 1000) of
     ok ->
         rpc:call(Nodename, erlang, link, [self()]),
         erlang:monitor_node(Nodename, true),
@@ -460,7 +480,8 @@ java code before we start accepting rpc:calls
 [[https://github.com/joedevivo/gen_java/blob/master/src/main/erlang/gen_java.erl#L150-L152][handle_info/2]]
 
 #+BEGIN_SRC erlang
-handle_info({Port, {data, {_Type, Data}}}, #gen_java_state { port = Port, module = M } = State) ->
+handle_info({Port, {data, {_Type, Data}}},
+            #gen_java_state { port = Port, module = M } = State) ->
     lager:info("[gen_java][~p] ~s", [M, Data]),
     {noreply, State};
 #+END_SRC
@@ -511,12 +532,15 @@ information about our java node's state as a JInterface.
 * Initializing the RPC Method Cache
 
 #+BEGIN_SRC java
-Map<ErlangFunctionCacheKey, Method> RPCCache = new HashMap<ErlangFunctionCacheKey, Method>();
+Map<ErlangFunctionCacheKey, Method> RPCCache =
+    new HashMap<ErlangFunctionCacheKey, Method>();
 RPCCache.put(
-        new ErlangFunctionCacheKey("erlang", "abs", OtpErlangDouble.class),
+        new ErlangFunctionCacheKey(
+                "erlang", "abs", OtpErlangDouble.class),
         Erlang.class.getMethod("abs", OtpErlangDouble.class));
 RPCCache.put(
-        new ErlangFunctionCacheKey("erlang", "abs", OtpErlangLong.class),
+        new ErlangFunctionCacheKey(
+                "erlang", "abs", OtpErlangLong.class),
         Erlang.class.getMethod("abs", OtpErlangLong.class));
 #+END_SRC
 
@@ -555,15 +579,16 @@ if(RPCCache.containsKey(msg.getMFA().getKey())) {
     pool.execute(msg);
 
 } else {
-    // This means it's not in the cache, we should try and find it
-    // and add it.
+    // This means it's not in the cache, we should
+    // try and find it and add it.
     Method m = find(msg.getMFA().getKey());
     if (m != null) {
         RPCCache.put(msg.getMFA().getKey(), m);
         msg.setMethod(m);
         pool.execute(msg);
     } else {
-        System.out.println("Bad RPC: " + msg.getMFA().getKey().toString());
+        System.out.println("Bad RPC: " +
+            msg.getMFA().getKey().toString());
         // we couldn't add it, be nice and send a badrpc error back
         msg.send(msg.toErlangBadRPC());
     }
@@ -587,7 +612,7 @@ So we construct that tuple as a repsonse and send it
 
 Reflection is only done once per method.
 
-* Off the deep end?
+* We're aiming for the pool, right?
 
 #+BEGIN_SRC java
 pool.execute(msg);
@@ -595,9 +620,8 @@ pool.execute(msg);
 
 We went ahead and added some thread pooling on the java side.
 
-Otherwise all the processing happening in once place. what if you
-asked it to do hard things?
-
+Otherwise all the processing happening in once place.
+what if you asked it to do hard things?
 
 [[https://github.com/joedevivo/gen_java/blob/master/src/main/java/com/devivo/gen_java/ErlangRemoteProcedureCallMessage.java#L146-L157][pool.execute()]] is where we package up the method's return value and
 send it back to Erlang.
@@ -606,15 +630,21 @@ send it back to Erlang.
 public void run() {
     OtpErlangObject result = new OtpErlangAtom("null");
     try {
-        result = (OtpErlangObject) this.method.invoke(null, getMFA().getArgs().elements());
+        result = (OtpErlangObject)
+            this.method.invoke(null, getMFA().getArgs().elements());
     } catch (Exception e) {
-        // This could "technically" throw a InvocationTargetException or an
-        // IllegalAccessException. We'll write defensive code for that eventually
+        // This could "technically" throw a InvocationTargetException
+        // or an IllegalAccessException. We'll write defensive code
+        // for that eventually
         System.out.println(e.getClass().getName() + " : " + e.getMessage());
         result = error(e.getClass().getName() + " : " + e.getMessage());
     }
     this.send(result);
 }
+#+END_SRC
+
+* Wraping Responses
+#+BEGIN_SRC java
 public void send(OtpErlangObject resp) {
     this.rex.send(this.fromPid, wrapResponse(resp));
 }
@@ -630,7 +660,6 @@ public OtpErlangTuple wrapResponse(OtpErlangObject resp) {
 this.send makes sure to send it to the right place
 
 wrapResponse makes sure to include that ref() we need for RPC
-
 
 * Erlang Developer Experience
 
@@ -851,6 +880,27 @@ init(Nodename) ->
     rpc:call(Nodename,
              'com.chef.analytics.rules.erlang.RuleValidator', 'setSchemas', [Schemas]),
     ok.
+#+END_SRC
+
+* Bringing it back to WebMachine
+
+#+BEGIN_SRC erlang
+case alaska_rules:valid_rule_group(nc_obj_rule:getval(rule, Rule)) of
+    true ->
+        lager:debug("malformed_request: rule syntax good"),
+        {false, Req, State};
+    {error, Msg} ->
+        lager:debug("Invalid rule syntax: ~s", [Msg]),
+        mf_return(Msg, [], Req, State);
+    {badrpc, nodedown} ->
+        lager:error("Alaska Rules node down, no validation possible"),
+        NewReq = req_helper([
+            {set_resp_header, ["content-type", "application/json"]},
+            {set_resp_body, [jiffy:encode(
+                {[{error, <<"server side validation error">>}]})]}
+        ], Req),
+        {{halt, 500}, NewReq, State}
+end.
 #+END_SRC
 
 * Wraping Up
