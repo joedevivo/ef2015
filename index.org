@@ -82,9 +82,9 @@ More info on that:
 
 ** Erlang
 ** [[http://github.com/basho/webmachine][Webmachine]]
-  REST Framework
-**  [[http://github.org/chef/sqerl][Sqerl]]
-  Lightweight ORM on top of epgsql
+REST Framework
+** [[http://github.org/chef/sqerl][Sqerl]]
+Lightweight ORM on top of epgsql
 
 * Validating Rules
 
@@ -174,10 +174,12 @@ It turns out we've had this for a while.
 
 * No RPC, No Problem
 
-Note: My OTP source links will all be to the tag R16B03-1
+Note: My OTP source links will all be to the
+      tag R16B03-1
 
-I already knew that RPC calls were handled by a process called
-`rex`, so I stared digging around the Erlang source for it
+I already knew that RPC calls were handled by a process
+called `rex`, so I stared digging around the Erlang
+source for it
 
 [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L344][rpc.erl]]
 
@@ -189,14 +191,12 @@ do_call(Node, Request, Timeout) ->
   Result = gen_server:call({?NAME,Node}, Request, Timeout),
 #+END_SRC
 
-That's in rpc:do_call
-
 * So, what's `Request` look like?
 It's coming in to rpc:do_call, so let's look at [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L296][rpc:call]]
 which calls it.
 
 #+BEGIN_SRC erlang
-call(N,M,F,A,infinity) when node() =:= N ->
+call(N,M,F,A,infinity) when node() ==:== N ->
     %% Optimize local call
     local_call(M,F,A);
 call(N,M,F,A,infinity) ->
@@ -221,7 +221,7 @@ There's some pretty nifty stuff in there about spawning
 monitors and trapping exits, but it's not really relevant
 to what we're doing here
 
-* Request II
+* Request
 
 #+BEGIN_SRC erlang
 Request = {
@@ -236,8 +236,6 @@ Request = {
 * But wait, there's more
 That's not all Erlang would be sending to another node.
 Let's dig into the gen_server:call
-
-** PEEVE: rpc is in kernel, but gen_server is in stdlib
 
 [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/stdlib/src/gen_server.erl#L168-L189][gen_server:call]]
 
@@ -257,6 +255,9 @@ call(Name, Request, Timeout) ->
 
 the rabbit hole goes deeper.
 
+WARNING: rpc is in kernel, but gen_server is in stdlib
+  if you're digging in source
+
 * gen:call
 
 Source: [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/stdlib/src/gen.erl#L134-L243][gen:call]]
@@ -273,24 +274,24 @@ The actual message being sent is a 3-tuple
 
 * So, here's the path
 #+BEGIN_SRC erlang
-rpc:call(Node, M, F, As) ->
-rpc:do_call(Node, {call, M,F,A,group_leader()}, T) ->
-gen_server:call({rex,Node}, {call,M,F,A,GL}, T) ->
-gen:call(   {rex,Node}, '$gen_call',{call,M,F,A,GL},T) ->
-gen:do_call({rex,Node}, '$gen_call',{call,M,F,A,GL},T) ->
-erlang:send({rex,Node},{'$gen_call',
-                        {self(), Mref},
-                        {call,M,F,A,GL}).
+rpc:call(            Node,                    M,F,A,    T) ->
+rpc:do_call(         Node,              {call,M,F,A,GL},T) ->
+gen_server:call({rex,Node},             {call,M,F,A,GL},T) ->
+gen:call(       {rex,Node}, '$gen_call',{call,M,F,A,GL},T) ->
+gen:do_call(    {rex,Node}, '$gen_call',{call,M,F,A,GL},T) ->
+erlang:send(    {rex,Node},{'$gen_call',
+                                {self(), Mref},
+                                        {call,M,F,A,GL}).
 %%% ^^^ JACKPOT!
 #+END_SRC
 
-* 1st element
+* 1st element: ID
 
 #+BEGIN_SRC erlang
 '$gen_call'
 #+END_SRC
 
-* 2nd element
+* 2nd element: Return Address
 
 #+BEGIN_SRC erlang
 { From :: pid(),
@@ -300,7 +301,7 @@ erlang:send({rex,Node},{'$gen_call',
 From pid could be waiting for a bunch of replies.
 MRef let's it know what it's a reply to
 
-* 3rd element
+* 3rd element: RPC Request
 
 Request from above
 
@@ -443,7 +444,8 @@ public static OtpErlangObject toErlangException(Exception e) {
 send knows just enough about erlang/rex to send
 an error message back to rpc:call
 
-We forgot to look at that! Fortunately it's here in [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/stdlib/src/gen.erl#L211-L214][gen:do_call]]
+We forgot to look at that! Fortunately it's
+here in [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/stdlib/src/gen.erl#L211-L214][gen:do_call]]
 
 It's waiting for a
 #+BEGIN_SRC erlang
@@ -475,7 +477,6 @@ to the console, which we'll teach the erlang side to monitor.
 
 #+BEGIN_SRC java
 ErlangRemoteProcedureCallMessage msg = null;
-
 try {
     msg = new ErlangRemoteProcedureCallMessage(rex, o);
 } catch (ErlangRemoteException erlE) {
@@ -512,15 +513,11 @@ Opens a port running your jar in the JVM
 * Basic Handshake
 
 #+BEGIN_SRC erlang
-case wait_until(
-        fun() ->
-            X = rpc:call(Nodename, erlang, node, [], 10000),
-            lager:debug(
-                "[gen_java][~p] "
-                "rpc:call(~p, erlang, node, []) = ~p",
-                [Module, Nodename, X]),
-            Nodename = : = X
-        end, 20, 1000) of
+IsRunning = fun() ->
+    X = rpc:call(Nodename, erlang, node, [], 10000),
+    Nodename = : = X
+end,
+case wait_until(IsRunning, 20, 1000) of
     ok ->
         rpc:call(Nodename, erlang, link, [self()]),
         erlang:monitor_node(Nodename, true),
@@ -533,7 +530,7 @@ end
 #+CAPTION: that's so fetch
 [[./img/Mean-Girls-stop-trying-to-make-fetch-happen.gif]]
 
-* Handshake II
+* Handshake: What just happened?
 
 ** keeps rpc calling erlang:node/0 until it gets an answer
 ** if it doesn't stop the server, otherwise
@@ -542,7 +539,7 @@ end
 ** init_callback?
 
 After we've started, there's a callback that lets you run some
-startup java code before we start accepting rpc:calls
+start up java code before we start accepting rpc:calls
 
 * Error logging
 
@@ -591,11 +588,6 @@ Java doesn't have these
 
 Let's talk about how we map erlang MFAs
 
-* Needed by our Handshake
-erlang:link/1 and erlang:node/0 are special cases
-because they need information about our java node's
-state as a JInterface.
-
 * All Others
 ** must be java methods of type public static final
 ** must have all arguments and return types of classes
@@ -639,7 +631,7 @@ RPCCache.put(
         Java.class.getMethod("input_arguments"));
 #+END_SRC
 
-* ACHEIVMENT UNLOCKED: Java dot java
+* ACHEIVEMENT UNLOCKED: Java dot java
 
 [[https://github.com/joedevivo/gen_java/blob/master/src/main/java/com/devivo/gen_java/Java.java][Java.java]]
 
@@ -726,8 +718,8 @@ pong
 ** Args: ARGS!
 
 * Caching?
-[[https://github.com/joedevivo/gen_java/blob/0.1.2/src/main/java/com/devivo/gen_java/ErlangServer.java#L145-L165][
-check the cache]]
+
+[[https://github.com/joedevivo/gen_java/blob/0.1.2/src/main/java/com/devivo/gen_java/ErlangServer.java#L145-L165][check the cache]]
 
 #+BEGIN_SRC java
 if(RPCCache.containsKey(msg.getMFA().getKey())) {
@@ -735,8 +727,8 @@ if(RPCCache.containsKey(msg.getMFA().getKey())) {
     msg.setMethod(m);
     pool.execute(msg);
 } else {
-    // This means it's not in the cache, we should
-    // try and find it and add it.
+    //// This means it's not in the cache, we should
+    //// try and find it and add it.
     Method m = find(msg.getMFA().getKey());
     if (m != null) {
         RPCCache.put(msg.getMFA().getKey(), m);
@@ -745,7 +737,7 @@ if(RPCCache.containsKey(msg.getMFA().getKey())) {
     } else {
         System.out.println("Bad RPC: " +
             msg.getMFA().getKey().toString());
-        // we couldn't add it, be nice and send a badrpc error back
+        //// we couldn't add it, be nice and send a badrpc error back
         msg.send(msg.toErlangBadRPC());
     }
 }
@@ -764,16 +756,14 @@ if(RPCCache.containsKey(msg.getMFA().getKey())) {
 
 So we construct that tuple as a repsonse and send it
 
-* Payoff!
+* Caching Payoff!
 
 Reflection is only done once per method.
 
 * We're aiming for the pool, right?
-
 #+BEGIN_SRC java
 pool.execute(msg);
 #+END_SRC
-
 We went ahead and added some thread pooling on the java side.
 
 Otherwise all the processing happening in once place.
@@ -789,9 +779,9 @@ public void run() {
         result = (OtpErlangObject)
             this.method.invoke(null, getMFA().getArgs().elements());
     } catch (Exception e) {
-        // This could "technically" throw a InvocationTargetException
-        // or an IllegalAccessException. We'll write defensive code
-        // for that eventually
+        //// This could "technically" throw a InvocationTargetException
+        //// or an IllegalAccessException. We'll write defensive code
+        //// for that eventually
         System.out.println(e.getClass().getName() + " : " + e.getMessage());
         result = error(e.getClass().getName() + " : " + e.getMessage());
     }
@@ -827,6 +817,7 @@ You might remember that I'm kind of a user experience nut
 
 #+BEGIN_SRC erlang
 -module(my_java).
+
 -compile({parse_transform, gen_java_parse_transform}).
 #+END_SRC
 
@@ -852,21 +843,9 @@ You might remember that I'm kind of a user experience nut
     permanent, 5000, worker, [my_java]},
 #+END_SRC
 
-* init callback
-Remember that? put it here, it'll get called right after the handshake
+* start_link/0?!  Parse Transform
 
-#+BEGIN_SRC erlang
--spec init(atom()) -> ok.
-init(Nodename) ->
-    SomeState = {some, thing, maybe_a_file_path},
-    rpc:call(Nodename,
-             'com.yourcompany.package',
-             'init', [SomeState]).
-#+END_SRC
-
-* Parse Transform
-
-** wrappers for gen_server:call
+** wrappers for gen_java functions
 
 #+BEGIN_SRC erlang
 17 = my_java:call(erlang, abs, [-17]).
@@ -874,15 +853,12 @@ init(Nodename) ->
      my_java:call('com.my.package','myMethod',[]).
 #+END_SRC
 
-* How it does it
- Simple parse transforms are easy
-
 [[https://github.com/joedevivo/gen_java/blob/master/src/main/erlang/gen_java_parse_transform.erl][gen_java_parse_transform.erl]]
+
+* 5 Functions for FREE
 
 This whole file just looks for a module's name,
 and subs it in to 5 functions
-
-* 5 Functions
 
 #+BEGIN_SRC erlang
 -export([start_link/0,start/0,call/3,call/4,stop/0]).
@@ -903,76 +879,17 @@ start_link() ->
     gen_java:start_link(my_java).
 #+END_SRC
 
-* That's it!
-
-** Let's look at one
-
-#+BEGIN_SRC erlang
-func({call, 4}, L, #state{module=Module}) ->
-      {function,L,call,4,
-          [{clause,L,
-               [{var,L,'Module'},{var,L,'Function'},
-                {var,L,'Args'},{var,L,'Timeout'}],
-               [],
-               [{call,L,
-                    {remote,L,{atom,L,gen_java},{atom,L,call}},
-                    [{atom,L,Module},
-                     {var,L,'Module'},
-                     {var,L,'Function'},
-                     {var,L,'Args'},
-                     {var,L,'Timeout'}]}]}]}.
-#+END_SRC
-
-There's only two variables in that whole mess
-
-** L : The line number at which this code goes
-** Module: The name of the module we're calling
-
-* Generated Function
+* init callback
+Remember that? put it here, it'll get called right after the handshake
 
 #+BEGIN_SRC erlang
-call(Module, Function, Args, Timeout) ->
-    gen_java:call(my_java, Module, Function, Args, Timeout).
+-spec init(atom()) -> ok.
+init(Nodename) ->
+    SomeState = {some, thing, maybe_a_file_path},
+    rpc:call(Nodename,
+             'com.yourcompany.package',
+             'init', [SomeState]).
 #+END_SRC
-
-* Abstract Forms
-
-All that gobbledy gook is an Abstract Form. You can make Artesianal
-Handcrafted Abstract Forms, but for things like this there's an
-easier way
-
-#+BEGIN_SRC erlang
-F = fun(S) ->
-    {ok, T, _} = erl_scan:string(S),
-    {ok, AbsForm} = erl_parse:parse_form(T),
-    AbsForm
-end.
-#+END_SRC
-
-* Your own Abstract Form
-#+BEGIN_SRC erlang
-F("call(Module, Function, Args, Timeout) ->
-    gen_java:call(my_java, Module, Function, Args, Timeout).").
-{function,1,call,4,
-          [{clause,1,
-                   [{var,1,'Module'},
-                    {var,1,'Function'},
-                    {var,1,'Args'},
-                    {var,1,'Timeout'}],
-                   [],
-                   [{call,2,
-                          {remote,2,{atom,2,gen_java},{atom,2,call}},
-                          [{atom,2,my_java},
-                           {var,2,'Module'},
-                           {var,2,'Function'},
-                           {var,2,'Args'},
-                           {var,2,'Timeout'}]}]}]}
-
-#+END_SRC
-
-To add it to your own parse transform, you just have to sub all those
-1's and 2's with L and all those my_java's with Module
-
 
 * Adding convenience
 
@@ -1101,6 +1018,8 @@ end.
 
 * Erlang Haskell Interface
 
+[[./img/haskell.png]]
+
 Introducing Erlang Haskell Interface 0.2
 [[https://github.com/joedevivo/erlang-haskell-interface][github source]]
 
@@ -1110,7 +1029,7 @@ But somebody did: [[http://hackage.haskell.org/package/erlang-0.1][hackage erlan
 
 * What I got:
 
-* Erlang Types
+* Erlang Types in Haskell
 
 #+BEGIN_SRC haskell
 data ErlType = ErlNull
@@ -1129,6 +1048,7 @@ data ErlType = ErlNull
 #+END_SRC
 
 * Packing functions
+
 #+BEGIN_SRC haskell
 putC = putWord8 . fromIntegral
 putn = putWord16be . fromIntegral
@@ -1144,51 +1064,46 @@ getA = liftM C.unpack . getByteString
 #+END_SRC
 
 * Half a Protocol
-Looks like erlang-0.1 knew how to connect to an Erlang node from Haskell
+Looks like erlang-0.1 knew how to connect to
+an Erlang node from Haskell
 
 It wanted it one way, but I wanted the other
 
 * Getting the old one working
-nano-md5 dependency didn't work anymore, so replaced with PureMD5
+nano-md5 dependency didn't work anymore,
+so replaced with PureMD5
 
-[[https://wiki.haskell.org/Applications_and_libraries/Interfacing_other_languages/Erlang][Existing Documentation]] wasn't great
+[[https://wiki.haskell.org/Applications_and_libraries/Interfacing_other_languages/Erlang][Existing Documentation]] wasn't great,
+but it might have been me
 
-* Spinning up a Haskell Erlang node
+* Spinning up an Erlang node in Haskell
 
 [[https://github.com/joedevivo/erlang-haskell-interface/blob/master/Test.hs#L17-L30][start]]
 
 #+BEGIN_SRC haskell
 start nodename = do
     setupLoggers DEBUG
-
     infoM "Test" $ "Starting Node: " ++ nodename
     self <- createSelf nodename
     mbox <- createMBox self
     debugM "Test" $ "mbox: " ++ (show mbox)
-
-    -- Rex spawned here, because it's our job as consumers of this
-    -- module to consume these
     forever $ do
     rex_mbox <- createNamedMBox "rex" self
     forkIO $ rex nodename rex_mbox
     return ()
 #+END_SRC
 
-* createSelf
+* createSelf: Creating the Haskell Node
 
 [[https://github.com/joedevivo/erlang-haskell-interface/blob/master/src/Foreign/Erlang/Processes.hs#L66-L79][Processes.hs]]
 
 #+BEGIN_SRC haskell
--- | Instantiate a Haskell node.  This initializes the FFI.
 createSelf          :: String -> IO Self
 createSelf nodename = do
     inbox <- newEmptyMVar
     forkIO $ serve nodename inbox
     forkIO $ self nodename inbox
-
     node <- return .  Self $ putMVar inbox
-
-    -- Try spawning net_kernel mbox
     nk_mbox <- createNamedMBox "net_kernel" node
     forkIO $ net_kernel nk_mbox
     return node
@@ -1198,7 +1113,8 @@ self is the thing that routes those messages
 
 * serve
 
-serve is the function that connects to epmd, opens up a listener and then puts messages in a mbox
+serve is the function that connects to epmd, opens up a listener
+and then puts messages in a mbox
 
 * Learning EPMD
 [[http://www.erlang.org/doc/man/epmd.html][epmd]]
@@ -1231,7 +1147,7 @@ Here's the message EPMD expects
 #+CAPTION: Bytes of ALIVE2_RESP
 [[./img/EPMD_ALIVE2_RESP.png]]
 
-* Haskell Does It
+* Haskell sends a EPMD_ALIVE2_REQ
 #+BEGIN_SRC haskell
 epmdAlive2Req :: String -> Int -> IO ()
 epmdAlive2Req node port = withEpmd $ \hdl -> do
@@ -1283,14 +1199,13 @@ recv_challege_ack    <------   send_challenge_ack
 
 Let's gloss over this. If you want to see it, I did it here: [[https://github.com/joedevivo/erlang-haskell-interface/blob/master/src/Foreign/Erlang/Network.hs#L197-L248][Network.hs]]
 
-* serve
+* the serve function: listening for erlang communication
 
 ** Opens a socket on port X
 ** Does the ALIVE2_REQ with port X to EPMD
 ** Does the Distributed Erlang Handshake with the ErlNode
 ** Opens up two way communication erl <-> hs
 ** Routes any received messages to self via ErlDispatch
-
 
 [[https://github.com/joedevivo/erlang-haskell-interface/blob/master/src/Foreign/Erlang/Processes.hs#L284-L335][serve]]
 
@@ -1309,7 +1224,7 @@ serve nodename outbox = S.withSocketsDo $
         procRequests lock sock
 #+END_SRC
 
-* procRequests
+* procRequests: processing incoming socket connections from Erlang
 
 #+BEGIN_SRC haskell
 procRequests :: MVar () -> S.Socket -> IO ()
@@ -1321,7 +1236,7 @@ procRequests lock mastersock =
        procRequests lock mastersock
 #+END_SRC
 
-* procMessages
+* procMessages: processing messages from that socket
 #+BEGIN_SRC haskell
 procMessages :: MVar () -> S.Socket -> S.SockAddr -> IO ()
 procMessages lock connsock clientaddr =
@@ -1335,7 +1250,7 @@ procMessages lock connsock clientaddr =
        putMVar outbox $ ConnectedNode to node
 #+END_SRC
 
-* nodeRecv
+* nodeRecv: routing incoming messages
 #+BEGIN_SRC haskell
 {-
 A `nodeRecv` thread is responsible for communication from an Erlang
@@ -1350,7 +1265,8 @@ nodeRecv mvar recv outbox = loop
             -- Nothing is a keepalive.  All we want to do is echo it.
             Nothing  -> putMVar mvar (Nothing, Nothing)
             -- A real message goes to self to be dispatched.
-            Just ctl -> putMVar outbox $ ErlDispatch ctl (fromJust mmsg)
+            Just ctl -> putMVar outbox $
+                ErlDispatch ctl (fromJust mmsg)
         loop
 #+END_SRC
 
@@ -1358,7 +1274,8 @@ nodeRecv mvar recv outbox = loop
 
 [[http://www.erlang.org/doc/apps/erts/erl_dist_protocol.html#id92768][Protocol between connected nodes]]
 
-Turns out we need to figure out how to interpret Erlangy packets coming in now
+Turns out we need to figure out how to interpret Erlangy
+packets coming in now
 
 Here's the distilled version of what they could be:
 
@@ -1391,7 +1308,8 @@ self nodename inbox = loop 1 [] [] []
   where
     loop id registered mboxes nodes = do
         msg <- takeMVar inbox
-        debugM "Foreign.Erlang.Processes" $ "loop msg recv'd: " ++ (show msg)
+        debugM "Foreign.Erlang.Processes"
+            $ "loop msg recv'd: " ++ (show msg)
         case msg of
           -- other cases omited for clarity
           ErlDispatch ctl msg -> do
@@ -1399,7 +1317,8 @@ self nodename inbox = loop 1 [] [] []
               ErlTuple [ErlInt 2, _, pid] ->
                 maybe (return ()) ($ msg) $ lookup pid mboxes
               ErlTuple [ErlInt 6, from, _, pid] ->
-                maybe (return ()) ($ (ErlTuple [from, msg])) $ lookup pid registered
+                maybe (return ())
+                   ($ (ErlTuple [from, msg])) $ lookup pid registered
               _ -> return ()
             loop id registered mboxes nodes
           -- This clause is for when Erlang has connected to this node
@@ -1426,9 +1345,6 @@ net_kernel mbox = do
         from@(ErlPid (ErlAtom node) a b c),
         msg@(ErlTuple [_,ErlTuple [_,ref],_])
         ]) <- mboxRecv mbox
-    debugM "Test" $ "net_kernel from: " ++ (show from)
-    debugM "Test" $ "            msg: " ++ (show msg)
-    -- TODO: The answer is always 'yes', maybe it shouldn't be?
     mboxSend mbox node (Left from) $ ErlTuple [ref, ErlAtom "yes"]
     net_kernel mbox
 #+END_SRC
@@ -1453,7 +1369,7 @@ ErlTuple [ErlAtom "$gen_call",
 
 This should look familiar!
 
-* The Rex mbox
+* The Rex mbox handler
 
 [[https://github.com/joedevivo/erlang-haskell-interface/blob/master/Test.hs#L32-L60][Test.hs:rex mbox]]
 
@@ -1462,12 +1378,11 @@ rex nodename mbox = do
     (ErlTuple [
         from@(ErlPid (ErlAtom node) a b c),
         msg@(ErlTuple [_,ErlTuple [_,ref],ErlTuple [
-            -- [ErlAtom "call",ErlAtom "mod",ErlAtom "fun",ErlList [ErlAtom "args"]
-                call, --ErlAtom "call",
+                call,
                 ErlAtom modName,
                 ErlAtom funName,
                 args,
-                _ --from@(ErlPid (ErlAtom node) a b c)
+                _ -- GroupLeader
             ])
         ]) <- mboxRecv mbox
     debugM "Test" $ "rpc " ++ modName ++ ":" ++ funName ++ "(" ++ (show args) ++ ")"
