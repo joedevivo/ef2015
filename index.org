@@ -1027,7 +1027,7 @@ valid_rule_group(Bin) ->
     'validRuleGroup', [Bin]).
 #+END_SRC
 
-* What do those java methos look like?
+* What do those java methods look like?
 
 #+BEGIN_SRC java
 public static OtpErlangObject validRule(OtpErlangBinary ruleBin) {
