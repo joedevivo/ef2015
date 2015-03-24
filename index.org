@@ -184,7 +184,9 @@ I already knew that RPC calls were handled by a process called
 #+BEGIN_SRC erlang
 %% In the source for rpc.erl
 -define(NAME, rex).
-Result = gen_server:call({?NAME,Node}, Request, Timeout),
+do_call(Node, Request, Timeout) ->
+  %% ...
+  Result = gen_server:call({?NAME,Node}, Request, Timeout),
 #+END_SRC
 
 That's in rpc:do_call
@@ -328,9 +330,8 @@ public static void main(String[] stringArgs)
     String nodename = stringArgs[0];
     String cookie = stringArgs[1];
     OtpNode self = new OtpNode(nodename, cookie);
-    boolean keepGoing = true;
     OtpMbox rex = self.createMbox("rex");
-    while(keepGoing) {
+    while(true) {
     // rex.receive is a blocking call,
     // so just hang out here until one shows up
         OtpErlangObject o = rex.receive();
@@ -571,27 +572,29 @@ System.out.printlns will end up in your erlang application's log
 
 There are somethings we just want every java node to be able to do:
 
-* Needed by our Handshake
-** erlang:node/0
-** erlang:link/1
+**  Needed by our Handshake
+*** erlang:node/0
+*** erlang:link/1
 
-* POC Methods
-** erlang:abs/1
+** POC Methods
+*** erlang:abs/1 x2
 
-* Nice for JVM inspection
-** java:system_properties/0
-** java:system_env/0
-** java:input_args/0
+** Nice for JVM inspection
+*** java:system_properties/0
+*** java:system_env/0
+*** java:input_args/0
 
 * WTF is the java module?!
 
-I made it up. I made the erlang module up to. Java doesn't have these
+I made it up. I made the erlang module up too.
+Java doesn't have these
 
 Let's talk about how we map erlang MFAs
 
 * Needed by our Handshake
-erlang:link/1 and erlang:node/0 are special cases because they need
-information about our java node's state as a JInterface.
+erlang:link/1 and erlang:node/0 are special cases
+because they need information about our java node's
+state as a JInterface.
 
 * All Others
 ** must be java methods of type public static final
@@ -718,7 +721,7 @@ pong
 
 * What about your own methods?
 
-** Module: Full Java Classname
+** Module: Full Java Class Name
 ** Function: Java Method Name
 ** Args: ARGS!
 
@@ -776,8 +779,8 @@ We went ahead and added some thread pooling on the java side.
 Otherwise all the processing happening in once place.
 what if you asked it to do hard things?
 
-[[https://github.com/joedevivo/gen_java/blob/master/src/main/java/com/devivo/gen_java/ErlangRemoteProcedureCallMessage.java#L146-L157][pool.execute()]] is where we package up the method's return value and
-send it back to Erlang.
+[[https://github.com/joedevivo/gen_java/blob/master/src/main/java/com/devivo/gen_java/ErlangRemoteProcedureCallMessage.java#L146-L157][pool.execute()]] is where we package up the method's
+return value and send it back to Erlang.
 
 #+BEGIN_SRC java
 public void run() {
@@ -796,7 +799,7 @@ public void run() {
 }
 #+END_SRC
 
-* Wraping Responses
+* Wrapping Responses
 #+BEGIN_SRC java
 public void send(OtpErlangObject resp) {
     this.rex.send(this.fromPid, wrapResponse(resp));
@@ -856,7 +859,9 @@ Remember that? put it here, it'll get called right after the handshake
 -spec init(atom()) -> ok.
 init(Nodename) ->
     SomeState = {some, thing, maybe_a_file_path},
-    rpc:call(Nodename, 'com.yourcompany.package', 'init', [SomeState]).
+    rpc:call(Nodename,
+             'com.yourcompany.package',
+             'init', [SomeState]).
 #+END_SRC
 
 * Parse Transform
@@ -865,7 +870,8 @@ init(Nodename) ->
 
 #+BEGIN_SRC erlang
 17 = my_java:call(erlang, abs, [-17]).
-<<"your heart's desire">> = my_java:call('com.my.package','myMethod',[]).
+<<"your heart's desire">> =
+     my_java:call('com.my.package','myMethod',[]).
 #+END_SRC
 
 * How it does it
@@ -873,8 +879,8 @@ init(Nodename) ->
 
 [[https://github.com/joedevivo/gen_java/blob/master/src/main/erlang/gen_java_parse_transform.erl][gen_java_parse_transform.erl]]
 
-This whole file just looks for a module's name, and subs it in to 5
-functions
+This whole file just looks for a module's name,
+and subs it in to 5 functions
 
 * 5 Functions
 
@@ -1008,20 +1014,50 @@ my_java:my_method(Binary).
 
 -export([valid_rule/1, valid_rule_group/1, init/1]).
 
--spec valid_rule(binary()) -> true | {error, string()} | gen_java:badrpc().
+-spec valid_rule(binary()) ->
+    true | {error, string()} | gen_java:badrpc().
 valid_rule(Bin) ->
-    call('com.chef.analytics.rules.erlang.RuleValidator', 'validRule', [Bin]).
+    call('com.chef.analytics.rules.erlang.RuleValidator',
+         'validRule', [Bin]).
 
--spec valid_rule_group(binary()) -> true | {error, string()} | gen_java:badrpc().
+-spec valid_rule_group(binary()) ->
+    true | {error, string()} | gen_java:badrpc().
 valid_rule_group(Bin) ->
-    call('com.chef.analytics.rules.erlang.RuleValidator', 'validRuleGroup', [Bin]).
+    call('com.chef.analytics.rules.erlang.RuleValidator',
+    'validRuleGroup', [Bin]).
+#+END_SRC
+
+* What do those java methos look like?
+
+#+BEGIN_SRC java
+public static OtpErlangObject validRule(OtpErlangBinary ruleBin) {
+    try {
+        String ruleText = new String(ruleBin.binaryValue());
+        Rule r = compiler.compile(ruleText);
+        return new OtpErlangAtom(true);
+    } catch (Exception e) {
+        return ErlangRemoteException.toErlangException(e);
+    }
+}
+
+public static OtpErlangObject validRuleGroup(OtpErlangBinary ruleGrpBin) {
+    try {
+        String ruleGrpText = new String(ruleGrpBin.binaryValue());
+        RuleGroup rg = compiler.compileGroup(ruleGrpText);
+        return new OtpErlangAtom(true);
+    } catch (Exception e) {
+        return ErlangRemoteException.toErlangException(e);
+    }
+}
 #+END_SRC
 
 * init/1
 
-We have some JSON schemas that alaksa_rules.jar uses for validation of attributes.
+We have some JSON schemas that alaksa_rules.jar uses for
+validation of attributes.
 
-init/1 reads them in as a list of binaries and then sends them over to the java node
+init/1 reads them in as a list of binaries and then sends
+them over to the java node
 
 #+BEGIN_SRC erlang
 init(Nodename) ->
@@ -1032,14 +1068,16 @@ init(Nodename) ->
                    {list_to_atom(filename:basename(Filename)), Bin}
                end || Filename <- JSONSchemas],
     rpc:call(Nodename,
-             'com.chef.analytics.rules.erlang.RuleValidator', 'setSchemas', [Schemas]),
+             'com.chef.analytics.rules.erlang.RuleValidator',
+             'setSchemas', [Schemas]),
     ok.
 #+END_SRC
 
 * Bringing it back to WebMachine
 
 #+BEGIN_SRC erlang
-case alaska_rules:valid_rule_group(nc_obj_rule:getval(rule, Rule)) of
+case alaska_rules:valid_rule_group(
+             nc_obj_rule:getval(rule, Rule)) of
     true ->
         lager:debug("malformed_request: rule syntax good"),
         {false, Req, State};
@@ -1057,11 +1095,13 @@ case alaska_rules:valid_rule_group(nc_obj_rule:getval(rule, Rule)) of
 end.
 #+END_SRC
 
-* Wraping Up
- All in all, this is just a wrapper for the hard stuff Erlang gave us
- for free. But what if they didn't?
+* Wrapping Up
+ All in all, this is just a wrapper for the hard stuff
+ Erlang gave us for free. But what if they didn't?
 
 * Erlang Haskell Interface
+
+Introducing Erlang Haskell Interface 0.2
 [[https://github.com/joedevivo/erlang-haskell-interface][github source]]
 
 * Erlang gives you zero Haskell for free
@@ -1130,7 +1170,7 @@ start nodename = do
     -- module to consume these
     forever $ do
     rex_mbox <- createNamedMBox "rex" self
-    forkIO $ rex rex_mbox
+    forkIO $ rex nodename rex_mbox
     return ()
 #+END_SRC
 
@@ -1154,11 +1194,11 @@ createSelf nodename = do
     return node
 #+END_SRC
 
-serve is the function that connects to epmd, opens up a listener and then puts messages in a mbox
-
 self is the thing that routes those messages
 
 * serve
+
+serve is the function that connects to epmd, opens up a listener and then puts messages in a mbox
 
 * Learning EPMD
 [[http://www.erlang.org/doc/man/epmd.html][epmd]]
@@ -1418,7 +1458,7 @@ This should look familiar!
 [[https://github.com/joedevivo/erlang-haskell-interface/blob/master/Test.hs#L32-L60][Test.hs:rex mbox]]
 
 #+BEGIN_SRC haskell
-rex mbox = do
+rex nodename mbox = do
     (ErlTuple [
         from@(ErlPid (ErlAtom node) a b c),
         msg@(ErlTuple [_,ErlTuple [_,ref],ErlTuple [
@@ -1431,16 +1471,22 @@ rex mbox = do
             ])
         ]) <- mboxRecv mbox
     debugM "Test" $ "rpc " ++ modName ++ ":" ++ funName ++ "(" ++ (show args) ++ ")"
-    mboxSend mbox node (Left from) $ ErlTuple [ref, ErlAtom "haskell_equals_very_yes"]
-    rex mbox
+    case (modName, funName, args) of
+      ("erlang", "node", ErlNull) ->
+        mboxSend mbox node (Left from) $
+            ErlTuple [ref, ErlAtom (nodename ++ "@127.0.0.1") ]
+      otherwise ->
+        mboxSend mbox node (Left from) $
+            ErlTuple [ref, ErlAtom "haskell_equals_very_yes"]
+    rex nodename mbox
 
 #+END_SRC
 
 * Future Work
 
 Notice I'm just returning 'haskell_equals_very_yes' for
-everything. I'm just excited that's working since it's my first stab
-at Haskell. Plenty of future work here.
+everything. I'm just excited that's working since it's my
+first stab at Haskell. Plenty of future work here.
 
 [[./img/erlang-haskell.gif]]
 
