@@ -1,10 +1,12 @@
 # -*- eval: (linum-mode 0); -*-
 # -*- eval: (whitespace-mode 0); -*-
 #+STARTUP: showeverything
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://thomasf.github.io/solarized-css/solarized-light.min.css" />
+
 * _
 #+TITLE: gen_java: easy java for erlang
 #+AUTHOR: Joe DeVivo
-#+OPTIONS: ^:{}
+#+OPTIONS: ^:{} toc:1 num:nil -:
 
 ** Joe DeVivo
 ** [[http://twitter.com/joedevivo][@joedevivo]]
@@ -513,11 +515,11 @@ Opens a port running your jar in the JVM
 * Basic Handshake
 
 #+BEGIN_SRC erlang
-IsRunning = fun() ->
+Fetch = fun() ->
     X = rpc:call(Nodename, erlang, node, [], 10000),
     Nodename = : = X
 end,
-case wait_until(IsRunning, 20, 1000) of
+case wait_until(Fetch, 20, 1000) of
     ok ->
         rpc:call(Nodename, erlang, link, [self()]),
         erlang:monitor_node(Nodename, true),
