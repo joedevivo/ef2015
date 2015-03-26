@@ -6,7 +6,7 @@
 * _
 #+TITLE: gen_java: easy java for erlang
 #+AUTHOR: Joe DeVivo
-#+OPTIONS: ^:{} toc:1 num:nil -:
+#+OPTIONS: ^:{} toc:1 num:nil
 
 ** Joe DeVivo
 ** [[http://twitter.com/joedevivo][@joedevivo]]
@@ -27,10 +27,10 @@ http://joedevivo.com/ef2015
 
 ** Sends alerts to various endpoints
      when various things happen
-*** Hipchat
-*** SMTP
-*** Webhooks
-*** More Coming Soon!
+ - Hipchat
+ - SMTP
+ - Webhooks
+ - More Coming Soon!
 
 * Want more?
 
@@ -81,12 +81,13 @@ More info on that:
 *** [[http://www.espertech.com/esper/][Esper]]
 
 * Configuration Web Service
+ - Erlang
 
-** Erlang
-** [[http://github.com/basho/webmachine][Webmachine]]
-REST Framework
-** [[http://github.org/chef/sqerl][Sqerl]]
-Lightweight ORM on top of epgsql
+ - [[http://github.com/basho/webmachine][Webmachine]]
+    REST Framework
+
+ - [[http://github.org/chef/sqerl][Sqerl]]
+    Lightweight ORM on top of epgsql
 
 * Validating Rules
 
@@ -164,19 +165,16 @@ It turns out we've had this for a while.
 
 ** It understands the ideas of:
 
-*** Nodes
-*** EPMD
-*** Erlang Datatypes
-*** Process Messages
+ - Nodes
+ - EPMD
+ - Erlang Datatypes
+ - Process Messages
 
-[[http://www.erlang.org/doc/apps/jinterface/jinterface_users_guide.html][JInterface User Guide]]
-
-[[http://www.erlang.org/doc/apps/jinterface/java/com/ericsson/otp/erlang/package-summary.html][JInterface Javadoc]]
-
+[[http://www.erlang.org/doc/apps/jinterface/jinterface_users_guide.html][JInterface User Guide]] | [[http://www.erlang.org/doc/apps/jinterface/java/com/ericsson/otp/erlang/package-summary.html][JInterface Javadoc]]
 
 * No RPC, No Problem
 
-Note: My OTP source links will all be to the
+Note: OTP source links will all be to the
       tag R16B03-1
 
 I already knew that RPC calls were handled by a process
@@ -214,8 +212,8 @@ call(N,M,F,A,Timeout) when is_integer(Timeout),
 
 * do_call
 
-** Some RPC magic we don't need to worry about
-** what we do care about is that it calls gen_server:call
+ - Some RPC magic we don't need to worry about
+ - what we do care about is that it calls gen_server:call
 
 [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L334-L361][rpc:do_call]]
 
@@ -495,14 +493,14 @@ try {
 
 * The gen_java module
 
-** It's a gen_server
-** Starts a jar of your choosing!
-** When you build that jar, include gen_java.jar
+ - It's a gen_server
+ - Starts a jar of your choosing!
+ - When you build that jar, include gen_java.jar
 
 * The gen_java project structure
 
-** src/main/java <- maven will build a jar with this
-** src/main/erlang <- rebar will use this
+ - src/main/java <- maven will build a jar with this
+ - src/main/erlang <- rebar will use this
 
 [[./img/mcdlt.jpg]]
 
@@ -534,11 +532,11 @@ end
 
 * Handshake: What just happened?
 
-** keeps rpc calling erlang:node/0 until it gets an answer
-** if it doesn't stop the server, otherwise
-** link the java node back to the server's process
-** monitor the java node
-** init_callback?
+ - keeps rpc calling erlang:node/0 until it gets an answer
+ - if it doesn't stop the server, otherwise
+ - link the java node back to the server's process
+ - monitor the java node
+ - init_callback?
 
 After we've started, there's a callback that lets you run some
 start up java code before we start accepting rpc:calls
@@ -562,8 +560,8 @@ System.out.printlns will end up in your erlang application's log
 
 ** We're sending rpc:calls to the java node
 ** we can send error messages back
-*** console
-*** rpc responses
+ - console
+ - rpc responses
 
 * So, what do we do with actual rpc calls?
 
@@ -572,16 +570,16 @@ System.out.printlns will end up in your erlang application's log
 There are somethings we just want every java node to be able to do:
 
 **  Needed by our Handshake
-*** erlang:node/0
-*** erlang:link/1
+ - erlang:node/0
+ - erlang:link/1
 
 ** POC Methods
-*** erlang:abs/1 x2
+ - erlang:abs/1 x2
 
 ** Nice for JVM inspection
-*** java:system_properties/0
-*** java:system_env/0
-*** java:input_args/0
+ - java:system_properties/0
+ - java:system_env/0
+ - java:input_args/0
 
 * WTF is the java module?!
 
@@ -591,10 +589,12 @@ Java doesn't have these
 Let's talk about how we map erlang MFAs
 
 * All Others
-** must be java methods of type public static final
-** must have all arguments and return types of classes
+ - must be java methods of type public static final
+
+ - must have all arguments and return types of classes
    provided by JInterface
-** since java reflection is a bit expensive, we cache the
+
+ - since java reflection is a bit expensive, we cache the
    Method objects.
 
 * Initializing the RPC Method Cache
@@ -909,6 +909,7 @@ my_java:my_method(Binary).
 * Bringing it Back to CHEF Analytics
 
 ** erlaska_rules is out!
+
 ** alaska_rules.jar is in!
 
 * sys.config
@@ -1405,6 +1406,7 @@ Notice I'm just returning 'haskell_equals_very_yes' for
 everything. I'm just excited that's working since it's my
 first stab at Haskell. Plenty of future work here.
 
+#+ATTR_HTML: :width 800
 [[./img/erlang-haskell.gif]]
 
 * Fin.

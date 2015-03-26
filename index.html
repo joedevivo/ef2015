@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>gen_java: easy java for erlang</title>
-<!-- 2015-03-24 Tue 17:41 -->
+<!-- 2015-03-26 Thu 10:02 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Joe DeVivo" />
@@ -303,18 +303,16 @@ Chef Server.
 <p>
 when various things happen
 </p>
-</div>
-<div id="outline-container-sec-3-3-1" class="outline-4">
-<h4 id="sec-3-3-1">Hipchat</h4>
-</div>
-<div id="outline-container-sec-3-3-2" class="outline-4">
-<h4 id="sec-3-3-2">SMTP</h4>
-</div>
-<div id="outline-container-sec-3-3-3" class="outline-4">
-<h4 id="sec-3-3-3">Webhooks</h4>
-</div>
-<div id="outline-container-sec-3-3-4" class="outline-4">
-<h4 id="sec-3-3-4">More Coming Soon!</h4>
+<ul class="org-ul">
+<li>Hipchat
+</li>
+<li>SMTP
+</li>
+<li>Webhooks
+</li>
+<li>More Coming Soon!
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -409,24 +407,18 @@ More info on that:
 <div id="outline-container-sec-7" class="outline-2">
 <h2 id="sec-7">Configuration Web Service</h2>
 <div class="outline-text-2" id="text-7">
-</div><div id="outline-container-sec-7-1" class="outline-3">
-<h3 id="sec-7-1">Erlang</h3>
-</div>
-<div id="outline-container-sec-7-2" class="outline-3">
-<h3 id="sec-7-2"><a href="http://github.com/basho/webmachine">Webmachine</a></h3>
-<div class="outline-text-3" id="text-7-2">
-<p>
-REST Framework
-</p>
-</div>
-</div>
-<div id="outline-container-sec-7-3" class="outline-3">
-<h3 id="sec-7-3"><a href="http://github.org/chef/sqerl">Sqerl</a></h3>
-<div class="outline-text-3" id="text-7-3">
-<p>
-Lightweight ORM on top of epgsql
-</p>
-</div>
+<ul class="org-ul">
+<li>Erlang
+</li>
+
+<li><a href="http://github.com/basho/webmachine">Webmachine</a>
+    REST Framework
+</li>
+
+<li><a href="http://github.org/chef/sqerl">Sqerl</a>
+    Lightweight ORM on top of epgsql
+</li>
+</ul>
 </div>
 </div>
 
@@ -562,36 +554,29 @@ It turns out we've had this for a while.
 <div id="outline-container-sec-16-1" class="outline-3">
 <h3 id="sec-16-1">It understands the ideas of:</h3>
 <div class="outline-text-3" id="text-16-1">
-</div><div id="outline-container-sec-16-1-1" class="outline-4">
-<h4 id="sec-16-1-1">Nodes</h4>
-</div>
-<div id="outline-container-sec-16-1-2" class="outline-4">
-<h4 id="sec-16-1-2">EPMD</h4>
-</div>
-<div id="outline-container-sec-16-1-3" class="outline-4">
-<h4 id="sec-16-1-3">Erlang Datatypes</h4>
-</div>
-<div id="outline-container-sec-16-1-4" class="outline-4">
-<h4 id="sec-16-1-4">Process Messages</h4>
-<div class="outline-text-4" id="text-16-1-4">
-<p>
-<a href="http://www.erlang.org/doc/apps/jinterface/jinterface_users_guide.html">JInterface User Guide</a>
-</p>
+<ul class="org-ul">
+<li>Nodes
+</li>
+<li>EPMD
+</li>
+<li>Erlang Datatypes
+</li>
+<li>Process Messages
+</li>
+</ul>
 
 <p>
-<a href="http://www.erlang.org/doc/apps/jinterface/java/com/ericsson/otp/erlang/package-summary.html">JInterface Javadoc</a>
+<a href="http://www.erlang.org/doc/apps/jinterface/jinterface_users_guide.html">JInterface User Guide</a> | <a href="http://www.erlang.org/doc/apps/jinterface/java/com/ericsson/otp/erlang/package-summary.html">JInterface Javadoc</a>
 </p>
 </div>
 </div>
 </div>
-</div>
-
 
 <div id="outline-container-sec-17" class="outline-2">
 <h2 id="sec-17">No RPC, No Problem</h2>
 <div class="outline-text-2" id="text-17">
 <p>
-Note: My OTP source links will all be to the
+Note: OTP source links will all be to the
       tag R16B03-1
 </p>
 
@@ -647,12 +632,13 @@ which calls it.
 <div id="outline-container-sec-19" class="outline-2">
 <h2 id="sec-19">do_call</h2>
 <div class="outline-text-2" id="text-19">
-</div><div id="outline-container-sec-19-1" class="outline-3">
-<h3 id="sec-19-1">Some RPC magic we don't need to worry about</h3>
-</div>
-<div id="outline-container-sec-19-2" class="outline-3">
-<h3 id="sec-19-2">what we do care about is that it calls gen_server:call</h3>
-<div class="outline-text-3" id="text-19-2">
+<ul class="org-ul">
+<li>Some RPC magic we don't need to worry about
+</li>
+<li>what we do care about is that it calls gen_server:call
+</li>
+</ul>
+
 <p>
 <a href="https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L334-L361">rpc:do_call</a>
 </p>
@@ -662,7 +648,6 @@ There's some pretty nifty stuff in there about spawning
 monitors and trapping exits, but it's not really relevant
 to what we're doing here
 </p>
-</div>
 </div>
 </div>
 
@@ -1090,26 +1075,27 @@ to the console, which we'll teach the erlang side to monitor.
 <div id="outline-container-sec-40" class="outline-2">
 <h2 id="sec-40">The gen_java module</h2>
 <div class="outline-text-2" id="text-40">
-</div><div id="outline-container-sec-40-1" class="outline-3">
-<h3 id="sec-40-1">It's a gen_server</h3>
-</div>
-<div id="outline-container-sec-40-2" class="outline-3">
-<h3 id="sec-40-2">Starts a jar of your choosing!</h3>
-</div>
-<div id="outline-container-sec-40-3" class="outline-3">
-<h3 id="sec-40-3">When you build that jar, include gen_java.jar</h3>
+<ul class="org-ul">
+<li>It's a gen_server
+</li>
+<li>Starts a jar of your choosing!
+</li>
+<li>When you build that jar, include gen_java.jar
+</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-sec-41" class="outline-2">
 <h2 id="sec-41">The gen_java project structure</h2>
 <div class="outline-text-2" id="text-41">
-</div><div id="outline-container-sec-41-1" class="outline-3">
-<h3 id="sec-41-1">src/main/java &lt;- maven will build a jar with this</h3>
-</div>
-<div id="outline-container-sec-41-2" class="outline-3">
-<h3 id="sec-41-2">src/main/erlang &lt;- rebar will use this</h3>
-<div class="outline-text-3" id="text-41-2">
+<ul class="org-ul">
+<li>src/main/java &lt;- maven will build a jar with this
+</li>
+<li>src/main/erlang &lt;- rebar will use this
+</li>
+</ul>
+
 
 <div class="figure">
 <p><img src="./img/mcdlt.jpg" alt="mcdlt.jpg" />
@@ -1119,7 +1105,6 @@ to the console, which we'll teach the erlang side to monitor.
 <p>
 At least it's not McRib
 </p>
-</div>
 </div>
 </div>
 
@@ -1164,26 +1149,23 @@ Opens a port running your jar in the JVM
 <div id="outline-container-sec-44" class="outline-2">
 <h2 id="sec-44">Handshake: What just happened?</h2>
 <div class="outline-text-2" id="text-44">
-</div><div id="outline-container-sec-44-1" class="outline-3">
-<h3 id="sec-44-1">keeps rpc calling erlang:node/0 until it gets an answer</h3>
-</div>
-<div id="outline-container-sec-44-2" class="outline-3">
-<h3 id="sec-44-2">if it doesn't stop the server, otherwise</h3>
-</div>
-<div id="outline-container-sec-44-3" class="outline-3">
-<h3 id="sec-44-3">link the java node back to the server's process</h3>
-</div>
-<div id="outline-container-sec-44-4" class="outline-3">
-<h3 id="sec-44-4">monitor the java node</h3>
-</div>
-<div id="outline-container-sec-44-5" class="outline-3">
-<h3 id="sec-44-5">init_callback?</h3>
-<div class="outline-text-3" id="text-44-5">
+<ul class="org-ul">
+<li>keeps rpc calling erlang:node/0 until it gets an answer
+</li>
+<li>if it doesn't stop the server, otherwise
+</li>
+<li>link the java node back to the server's process
+</li>
+<li>monitor the java node
+</li>
+<li>init_callback?
+</li>
+</ul>
+
 <p>
 After we've started, there's a callback that lets you run some
 start up java code before we start accepting rpc:calls
 </p>
-</div>
 </div>
 </div>
 
@@ -1220,11 +1202,12 @@ System.out.printlns will end up in your erlang application's log
 <div id="outline-container-sec-46-2" class="outline-3">
 <h3 id="sec-46-2">we can send error messages back</h3>
 <div class="outline-text-3" id="text-46-2">
-</div><div id="outline-container-sec-46-2-1" class="outline-4">
-<h4 id="sec-46-2-1">console</h4>
-</div>
-<div id="outline-container-sec-46-2-2" class="outline-4">
-<h4 id="sec-46-2-2">rpc responses</h4>
+<ul class="org-ul">
+<li>console
+</li>
+<li>rpc responses
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1244,33 +1227,36 @@ There are somethings we just want every java node to be able to do:
 <div id="outline-container-sec-48-1" class="outline-3">
 <h3 id="sec-48-1">Needed by our Handshake</h3>
 <div class="outline-text-3" id="text-48-1">
-</div><div id="outline-container-sec-48-1-1" class="outline-4">
-<h4 id="sec-48-1-1">erlang:node/0</h4>
-</div>
-<div id="outline-container-sec-48-1-2" class="outline-4">
-<h4 id="sec-48-1-2">erlang:link/1</h4>
+<ul class="org-ul">
+<li>erlang:node/0
+</li>
+<li>erlang:link/1
+</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-sec-48-2" class="outline-3">
 <h3 id="sec-48-2">POC Methods</h3>
 <div class="outline-text-3" id="text-48-2">
-</div><div id="outline-container-sec-48-2-1" class="outline-4">
-<h4 id="sec-48-2-1">erlang:abs/1 x2</h4>
+<ul class="org-ul">
+<li>erlang:abs/1 x2
+</li>
+</ul>
 </div>
 </div>
 
 <div id="outline-container-sec-48-3" class="outline-3">
 <h3 id="sec-48-3">Nice for JVM inspection</h3>
 <div class="outline-text-3" id="text-48-3">
-</div><div id="outline-container-sec-48-3-1" class="outline-4">
-<h4 id="sec-48-3-1">java:system_properties/0</h4>
-</div>
-<div id="outline-container-sec-48-3-2" class="outline-4">
-<h4 id="sec-48-3-2">java:system_env/0</h4>
-</div>
-<div id="outline-container-sec-48-3-3" class="outline-4">
-<h4 id="sec-48-3-3">java:input_args/0</h4>
+<ul class="org-ul">
+<li>java:system_properties/0
+</li>
+<li>java:system_env/0
+</li>
+<li>java:input_args/0
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1292,24 +1278,18 @@ Let's talk about how we map erlang MFAs
 <div id="outline-container-sec-50" class="outline-2">
 <h2 id="sec-50">All Others</h2>
 <div class="outline-text-2" id="text-50">
-</div><div id="outline-container-sec-50-1" class="outline-3">
-<h3 id="sec-50-1">must be java methods of type public static final</h3>
-</div>
-<div id="outline-container-sec-50-2" class="outline-3">
-<h3 id="sec-50-2">must have all arguments and return types of classes</h3>
-<div class="outline-text-3" id="text-50-2">
-<p>
+<ul class="org-ul">
+<li>must be java methods of type public static final
+</li>
+
+<li>must have all arguments and return types of classes
 provided by JInterface
-</p>
-</div>
-</div>
-<div id="outline-container-sec-50-3" class="outline-3">
-<h3 id="sec-50-3">since java reflection is a bit expensive, we cache the</h3>
-<div class="outline-text-3" id="text-50-3">
-<p>
+</li>
+
+<li>since java reflection is a bit expensive, we cache the
 Method objects.
-</p>
-</div>
+</li>
+</ul>
 </div>
 </div>
 
@@ -1768,6 +1748,7 @@ Remember that? put it here, it'll get called right after the handshake
 </div><div id="outline-container-sec-70-1" class="outline-3">
 <h3 id="sec-70-1">erlaska_rules is out!</h3>
 </div>
+
 <div id="outline-container-sec-70-2" class="outline-3">
 <h3 id="sec-70-2">alaska_rules.jar is in!</h3>
 </div>
@@ -2554,7 +2535,7 @@ first stab at Haskell. Plenty of future work here.
 
 
 <div class="figure">
-<p><img src="./img/erlang-haskell.gif" alt="erlang-haskell.gif" />
+<p><img src="./img/erlang-haskell.gif" alt="erlang-haskell.gif" width="800" />
 </p>
 </div>
 </div>
@@ -2566,7 +2547,7 @@ first stab at Haskell. Plenty of future work here.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Joe DeVivo</p>
-<p class="date">Created: 2015-03-24 Tue 17:41</p>
+<p class="date">Created: 2015-03-26 Thu 10:02</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
