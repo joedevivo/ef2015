@@ -1408,6 +1408,8 @@ first stab at Haskell. Plenty of future work here.
 
 * gen_haskell?
 
+[[https://github.com/joedevivo/gen_haskell][VERY YES!]]
+
  - Use port commands to start GHC instead of java!
 
  - Catch the output
@@ -1415,6 +1417,9 @@ first stab at Haskell. Plenty of future work here.
  - Mostly cut and paste from gen_java
 
 * It works!
+
+[[https://github.com/joedevivo/rpc_test][RPC Test app]]
+
 #+BEGIN_SRC erlang
 ➜ rpc_test ./_rel/rpc_test/bin/rpc_test console
 Exec: /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/erts-5.10.3/bin/erlexec -boot /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/releases/0.0.1/rpc_test -env ERL_LIBS /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/releases/0.0.1/lib -config /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/releases/0.0.1/sys.config -args_file /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/releases/0.0.1/vm.args -- console
