@@ -15,8 +15,8 @@
 http://joedevivo.com/ef2015
 
 * Introduction
-** I write Erlang at CHEF
-** I used to write Java
+ - I write Erlang at CHEF
+ - I used to write Java
 
 * Analytics at Chef
 
@@ -77,8 +77,8 @@ Event Processing (CEP)
 
 More info on that:
 
-*** [[http://blog.confluent.io/2015/01/29/making-sense-of-stream-processing/][CEP Blog Post]]
-*** [[http://www.espertech.com/esper/][Esper]]
+ - [[http://blog.confluent.io/2015/01/29/making-sense-of-stream-processing/][CEP Blog Post]]
+ - [[http://www.espertech.com/esper/][Esper]]
 
 * Configuration Web Service
  - Erlang
@@ -1406,7 +1406,61 @@ Notice I'm just returning 'haskell_equals_very_yes' for
 everything. I'm just excited that's working since it's my
 first stab at Haskell. Plenty of future work here.
 
+* gen_haskell?
+
+ - Use port commands to start GHC instead of java!
+
+ - Catch the output
+
+ - Mostly cut and paste from gen_java
+
+* It works!
+#+BEGIN_SRC erlang
+➜ rpc_test ./_rel/rpc_test/bin/rpc_test console
+Exec: /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/erts-5.10.3/bin/erlexec -boot /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/releases/0.0.1/rpc_test -env ERL_LIBS /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/releases/0.0.1/lib -config /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/releases/0.0.1/sys.config -args_file /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test/releases/0.0.1/vm.args -- console
+Root: /Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test
+/Users/joe/dev/joedevivo/rpc_test/_rel/rpc_test
+Erlang R16B02 (erts-5.10.3) [source] [64-bit] [smp:8:8] [async-threads:10] [hipe] [kernel-poll:false]
+
+15:33:17.970 [info] Application lager started on node 'rpc_test@127.0.0.1'
+15:33:17.970 [info] Application gen_java started on node 'rpc_test@127.0.0.1'
+15:33:17.970 [info] Application gen_haskell started on node 'rpc_test@127.0.0.1'
+15:33:17.973 [info] [gen_java][my_java] starting (pid: <0.89.0>)
+15:33:17.975 [info] [gen_java][my_java] cmd: "java -server -cp priv/gen_java.jar com.devivo.gen_java.ErlangServer gen_java_my_java_rpc_test@127.0.0.1 RVDTHTVOBAMGCPHVSWZW 10"
+15:33:17.981 [info] [gen_java][my_java] startup: "7399"
+15:33:18.066 [info] [gen_java][my_java] startup: "Starting OTP Node 'gen_java_my_java_rpc_test@127.0.0.1' with cookie RVDTHTVOBAMGCPHVSWZW"
+15:33:18.099 [info] [gen_java][my_java] startup: "Started node: gen_java_my_java_rpc_test@127.0.0.1"
+15:33:18.099 [info] [gen_java][my_java] OS Pid: "7399"
+15:33:18.119 [info] [gen_java][my_java] Thread Pool Size : 10
+15:33:18.123 [info] [gen_hasekll][my_haskell] starting (pid: <0.95.0>)
+15:33:18.123 [info] [gen_haskell][my_haskell] cmd: "runghc Node gen_haskell_my_haskell_rpc_test"
+15:33:18.128 [info] [gen_haskell][my_haskell] startup: "7402"
+15:33:18.600 [info] [gen_haskell][my_haskell] startup: "Starting Node: gen_haskell_my_haskell_rpc_test"
+15:33:18.600 [info] [gen_haskell][my_haskell] startup: "mbox: MBox ErlPid (ErlAtom \"gen_haskell_my_haskell_rpc_test\") 1 0 1 MVar *self*"
+15:33:18.600 [info] [gen_haskell][my_haskell] OS Pid: "7402"
+15:33:18.601 [info] [gen_haskell][my_haskell] rpc:call('gen_haskell_my_haskell_rpc_test@127.0.0.1', erlang, node, []) = {badrpc,nodedown}
+15:33:19.606 [info] [gen_haskell][my_haskell] rpc:call('gen_haskell_my_haskell_rpc_test@127.0.0.1', erlang, node, []) = 'gen_haskell_my_haskell_rpc_test@127.0.0.1'
+15:33:19.607 [info] [gen_haskell][my_haskell] rpc erlang:node(ErlNull)
+15:33:19.607 [info] [gen_haskell][my_haskell] rpc erlang:link(ErlList [ErlPid (ErlAtom "rpc_test@127.0.0.1") 95 0 3])
+15:33:19.607 [info] Application rpc_test started on node 'rpc_test@127.0.0.1'
+Eshell V5.10.3  (abort with ^G)
+(rpc_test@127.0.0.1)1> my_java:call(erlang, node, []).
+'gen_java_my_java_rpc_test@127.0.0.1'
+(rpc_test@127.0.0.1)2> my_haskell:call(erlang, node, []).
+'gen_haskell_my_haskell_rpc_test@127.0.0.1'
+15:33:39.509 [info] [gen_haskell][my_haskell] rpc erlang:node(ErlNull)
+(rpc_test@127.0.0.1)3> my_haskell:call(erlang, node, [1]).
+haskell_equals_very_yes
+15:33:46.656 [info] [gen_haskell][my_haskell] rpc erlang:node(ErlString "\SOH")
+(rpc_test@127.0.0.1)4> my_java:call(erlang, node, [1]).
+{error,"java.lang.ClassCastException: com.ericsson.otp.erlang.OtpErlangString cannot be cast to com.ericsson.otp.erlang.OtpErlangList"}
+(rpc_test@127.0.0.1)5> q().
+ok
+15:33:57.068 [info] [gen_haskell][my_haskell] Sending `rex ! stop` from terminate
+(rpc_test@127.0.0.1)6> 15:33:57.074 [info] [gen_java][my_java] Sending `rex ! stop` from terminate
+#+END_SRC
+
+* Fin
+
 #+ATTR_HTML: :width 800
 [[./img/erlang-haskell.gif]]
-
-* Fin.
