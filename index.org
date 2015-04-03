@@ -3,20 +3,23 @@
 #+STARTUP: showeverything
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://thomasf.github.io/solarized-css/solarized-light.min.css" />
 
+#+BEGIN_HTML
+<div id="vid" style="position:fixed;top:100;z-index:1000" align="center" width="100%">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/llHWDdqeQnU" frameborder="0" allowfullscreen></iframe>
+</div>
+#+END_HTML
+
 * _
 #+TITLE: gen_java: easy java for erlang
 #+AUTHOR: Joe DeVivo
 #+OPTIONS: ^:{} toc:0 num:nil
 
 #+BEGIN_HTML
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/llHWDdqeQnU" frameborder="0" allowfullscreen></iframe>
-</center>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
 #+END_HTML
 
-** Joe DeVivo
-** [[http://twitter.com/joedevivo][@joedevivo]]
-** [[http://chef.io][CHEF]]
+** Joe DeVivo |  [[http://twitter.com/joedevivo][@joedevivo]] |  [[http://chef.io][CHEF]]
 
 http://joedevivo.com/ef2015
 
