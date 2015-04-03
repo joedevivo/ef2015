@@ -6,7 +6,13 @@
 * _
 #+TITLE: gen_java: easy java for erlang
 #+AUTHOR: Joe DeVivo
-#+OPTIONS: ^:{} toc:1 num:nil
+#+OPTIONS: ^:{} toc:0 num:nil
+
+#+BEGIN_HTML
+<center>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/llHWDdqeQnU" frameborder="0" allowfullscreen></iframe>
+</center>
+#+END_HTML
 
 ** Joe DeVivo
 ** [[http://twitter.com/joedevivo][@joedevivo]]
@@ -23,7 +29,7 @@ http://joedevivo.com/ef2015
 ** Stream processing of all data that flows through
    Chef Server.
 
-** Used on clusters of up to 100,000 nodes!
+** Used on clusters of up to 40,000 nodes!
 
 ** Sends alerts to various endpoints
      when various things happen
@@ -37,6 +43,8 @@ http://joedevivo.com/ef2015
 BUY MY CONFIGURATION MANAGEMENT INFRASTRUCTURE
 
 [[http://chef.io][CHEF.io]] | [[http://docs.chef.io/analytics/][Analytics Documentation]]
+
+COME TO CHEFCONF: 3/31 - 4/2 Santa Clara
 
 * Alaska Pipeline
 ** Apache Storm Pipeline
@@ -178,7 +186,7 @@ Note: OTP source links will all be to the
       tag R16B03-1
 
 I already knew that RPC calls were handled by a process
-called `rex`, so I stared digging around the Erlang
+called `rex`, so I started digging around the Erlang
 source for it
 
 [[https://github.com/erlang/otp/blob/OTP_R16B03-1/lib/kernel/src/rpc.erl#L344][rpc.erl]]
@@ -508,7 +516,7 @@ At least it's not McRib
 
 * Starting the gen_java server
 
-Opens a port running your jar in the JVM
+- Opens a port running your jar in the JVM
 
 * Basic Handshake
 
@@ -861,7 +869,6 @@ You might remember that I'm kind of a user experience nut
 
 This whole file just looks for a module's name,
 and subs it in to 5 functions
-
 #+BEGIN_SRC erlang
 -export([start_link/0,start/0,call/3,call/4,stop/0]).
 
